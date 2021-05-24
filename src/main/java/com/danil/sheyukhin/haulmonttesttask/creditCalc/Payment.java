@@ -24,14 +24,16 @@ public class Payment {
         double scale = Math.pow(10, 2);
         double bodySum = summa / duration;
         for (int i=0; i < duration; i++) {
-            LocalDate date = LocalDate.now().plusMonths(nextMonth++);
-            double percentageSum = summa * percentage / 100 * date.lengthOfMonth() / date.lengthOfYear();
+            LocalDate paymentDate = LocalDate.now().plusMonths(nextMonth++);
+            int daysOfTheMonth = paymentDate.lengthOfMonth();
+            int daysOfTheYear = paymentDate.lengthOfYear();
+            double percentageSum = summa * percentage / 100 * daysOfTheMonth / daysOfTheYear;
             double paymentSum = bodySum + percentageSum;
             summa -= bodySum;
             Payment payment = new Payment(
-                                           date,
-                                Math.ceil(paymentSum * scale) / scale,
-                                   Math.ceil(bodySum * scale) / scale,
+                    paymentDate,
+                    Math.ceil(paymentSum * scale) / scale,
+                    Math.ceil(bodySum * scale) / scale,
                     Math.ceil(percentageSum * scale) / scale);
             payments.add(payment);
         }
