@@ -11,14 +11,26 @@ public class MainView extends VerticalLayout {
     private ClientDao clientDao;
     private Grid<Client> clientGrid;
 
-    private void listClients() {
-        clientGrid.setItems(clientDao.getAll());
-    }
-
     public MainView(ClientDao clientDao) {
         this.clientDao = clientDao;
         this.clientGrid = new Grid<>(Client.class);
+        clientGrid.setItems(clientDao.getAll());
+        clientGrid.setColumns("name", "phone", "email", "passport");
+        clientGrid.getColumnByKey("name").setHeader("ФИО");
+        clientGrid.getColumnByKey("phone").setHeader("Телефон");
+        clientGrid.getColumnByKey("email").setHeader("e-mail");
+        clientGrid.getColumnByKey("passport").setHeader("Паспорт");
         add(clientGrid);
-        listClients();
     }
+
+//    public MainView(ClientDao clientDao) {
+//        this.clientDao = clientDao;
+//        this.clientGrid = new Grid<>();
+//        clientGrid.setItems(clientDao.getAll());
+//        clientGrid.addColumn(Client::getName).setHeader("ФИО");
+//        clientGrid.addColumn(Client::getPhone).setHeader("Телефон");
+//        clientGrid.addColumn(Client::getEmail).setHeader("e-mail");
+//        clientGrid.addColumn(Client::getPassport).setHeader("Паспорт");
+//        add(clientGrid);
+//    }
 }

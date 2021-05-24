@@ -9,7 +9,7 @@ public class Client implements Entity {
     private String passport;
     private Integer bankId;
 
-    public Client(Integer id, String name, String phone, String email, String passport, Integer bankId) {
+    public Client(String name, String phone, String email, String passport) {
         this.id = id;
         this.name = name;
         this.phone = phone;

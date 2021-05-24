@@ -84,12 +84,13 @@ public class ClientDao implements Dao<Client> {
     static class ClientRowMapper implements RowMapper<Client> {
         @Override
         public Client mapRow(ResultSet resultSet, int i) throws SQLException {
-            return new Client(resultSet.getInt("ID"),
-                    resultSet.getString("NAME"),
+            Client client = new Client(resultSet.getString("NAME"),
                     resultSet.getString("PHONE"),
                     resultSet.getString("EMAIL"),
-                    resultSet.getString("PASSPORT"),
-                    resultSet.getInt("BANK_ID"));
+                    resultSet.getString("PASSPORT"));
+            client.setId(resultSet.getInt("ID"));
+            client.setBankId(resultSet.getInt("BANK_ID"));
+            return client;
         }
     }
 }
