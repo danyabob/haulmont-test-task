@@ -8,14 +8,12 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Component
 public class OfferDao implements Dao<Offer> {
     private JdbcTemplate jdbcTemplate;
     private OfferRowMapper offerRowMapper;
-    private CreditDao creditDao;
 
     public OfferDao(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
@@ -24,22 +22,16 @@ public class OfferDao implements Dao<Offer> {
 
     @Override
     public int create(Offer offer) {
-        jdbcTemplate.update("INSERT INTO OFFER(CLIENT_ID, CREDIT_ID, CREDIT_SUM, PAYMENT_DATE, PAYMENT, BODY_SUM, PERCENTAGE_SUM) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        jdbcTemplate.update("INSERT INTO OFFER(CLIENT_ID, CREDIT_ID, SUMMA, DURATION) VALUES (?, ?, ?, ?)",
                 offer.getClientId(),
                 offer.getCreditId(),
-                offer.getCreditSum(),
-                offer.getPaymentGraphic().getPaymentDate(),
-                offer.getPaymentGraphic().getPayment(),
-                offer.getPaymentGraphic().getBodySum(),
-                offer.getPaymentGraphic().getPercentageSum());
-        return jdbcTemplate.queryForObject("SELECT ID FROM OFFER WHERE CLIENT_ID = ? AND CREDIT_ID = ? AND CREDIT_SUM = ? AND PAYMENT_DATE = ? AND PAYMENT = ? AND BODY_SUM = ? AND PERCENTAGE_SUM = ?", Integer.class,
+                offer.getSumma(),
+                offer.getDuration());
+        return jdbcTemplate.queryForObject("SELECT ID FROM OFFER WHERE CLIENT_ID = ? AND CREDIT_ID = ? AND SUMMA = ? AND DURATION = ?", Integer.class,
                 offer.getClientId(),
                 offer.getCreditId(),
-                offer.getCreditSum(),
-                offer.getPaymentGraphic().getPaymentDate(),
-                offer.getPaymentGraphic().getPayment(),
-                offer.getPaymentGraphic().getBodySum(),
-                offer.getPaymentGraphic().getPercentageSum());
+                offer.getSumma(),
+                offer.getDuration());
     }
 
     @Override
@@ -54,15 +46,11 @@ public class OfferDao implements Dao<Offer> {
 
     @Override
     public void update(Offer offer) {
-        jdbcTemplate.update("UPDATE OFFER SET CLIENT_ID = ?, CREDIT_ID = ?, CREDIT_SUM = ?, PAYMENT_DATE = ?, PAYMENT = ?, BODY_SUM = ?, PERCENTAGE_SUM = ? WHERE ID = ?",
+        jdbcTemplate.update("UPDATE OFFER SET CLIENT_ID = ?, CREDIT_ID = ?, SUMMA = ?, DURATION = ? WHERE ID = ?",
                 offer.getClientId(),
                 offer.getCreditId(),
-                offer.getCreditSum(),
-                offer.getPaymentGraphic().getPaymentDate(),
-//                new Timestamp(offer.getPaymentGraphic().getPaymentDate().getTime()),
-                offer.getPaymentGraphic().getPayment(),
-                offer.getPaymentGraphic().getBodySum(),
-                offer.getPaymentGraphic().getPercentageSum(),
+                offer.getSumma(),
+                offer.getDuration(),
                 offer.getId());
     }
 
@@ -77,11 +65,8 @@ public class OfferDao implements Dao<Offer> {
             return new Offer(rs.getInt("ID"),
                     rs.getInt("CLIENT_ID"),
                     rs.getInt("CREDIT_ID"),
-                    rs.getInt("CREDIT_SUM"),
-                    rs.getDate("PAYMENT_DATE").toLocalDate(),
-                    rs.getInt("PAYMENT"),
-                    rs.getInt("BODY_SUM"),
-                    rs.getInt("PERCENTAGE_SUM"));
+                    rs.getInt("SUMMA"),
+                    rs.getInt("DURATION"));
         }
     }
 }

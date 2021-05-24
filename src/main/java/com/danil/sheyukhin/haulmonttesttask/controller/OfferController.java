@@ -1,5 +1,6 @@
 package com.danil.sheyukhin.haulmonttesttask.controller;
 
+import com.danil.sheyukhin.haulmonttesttask.creditCalc.Payment;
 import com.danil.sheyukhin.haulmonttesttask.dao.OfferDao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Offer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,11 @@ public class OfferController {
     @PostMapping("/offer")
     int createOffer(@RequestBody Offer offer) {
         return offerDao.create(offer);
+    }
+
+    @GetMapping("/payment")
+    List<Payment> getPayments() {
+        Offer offer = offerDao.getById(1);
+        return offer.getPayments();
     }
 }
