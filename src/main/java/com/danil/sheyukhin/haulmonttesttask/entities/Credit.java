@@ -1,24 +1,33 @@
 package com.danil.sheyukhin.haulmonttesttask.entities;
 
-public class Credit implements Entity{
+public class Credit implements Entity {
 
-    private Long id = null;
-    private String name;
+    private Integer id = null;
+    private Integer bankId;
     private int limit;
-    private int percent;
+    private int percentage;
 
-    public Credit(String name, int limit, int percent) {
-        this.name = name;
+    public Credit(Integer id, Integer bankId, int limit, int percentage) {
+        this.id = id;
+        this.bankId = bankId;
         this.limit = limit;
-        this.percent = percent;
+        this.percentage = percentage;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public Integer getId() {
+        return id;
+    }
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Integer getBankId() {
+        return bankId;
+    }
+    public void setBankId(Integer bankId) {
+        this.bankId = bankId;
     }
 
     public int getLimit() {
@@ -29,30 +38,21 @@ public class Credit implements Entity{
         this.limit = limit;
     }
 
-    public int getPercent() {
-        return percent;
+    public int getPercentage() {
+        return percentage;
     }
 
-    public void setPercent(int percent) {
-        this.percent = percent;
+    public void setPercentage(int percentage) {
+        this.percentage = percentage;
     }
 
     @Override
     public String toString() {
         return "Credit{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", bankId=" + bankId +
                 ", limit=" + limit +
-                ", percent=" + percent +
+                ", percentage=" + percentage +
                 '}';
-    }
-
-    @Override
-    public Integer getId() {
-        return null;
-    }
-
-    @Override
-    public void setId(Integer id) {
-
     }
 }

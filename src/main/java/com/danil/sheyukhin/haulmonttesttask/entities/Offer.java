@@ -1,104 +1,103 @@
 package com.danil.sheyukhin.haulmonttesttask.entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-public class Offer implements Entity{
+public class Offer implements Entity {
+    private Integer id;
+    private Integer clientId;
+    private Integer creditId;
+    private int creditSum;
+    private PaymentGraphic paymentGraphic;
 
-    private Long id = null;
-    private Client client;
-    private Credit credit;
-    private int sumOfCredit;
-    private Date dateOfNextPayment;
-    private int sumOfNextPayment;
-    private int sumOfBodyOfNextPayment;
-    private int sumOfPercentOfNextPayment;
-
-    public Offer(Client client, Credit credit, int sumOfCredit, Date dateOfNextPayment, int sumOfNextPayment, int sumOfBodyOfNextPayment, int sumOfPercentOfNextPayment) {
-        this.client = client;
-        this.credit = credit;
-        this.sumOfCredit = sumOfCredit;
-        this.dateOfNextPayment = dateOfNextPayment;
-        this.sumOfNextPayment = sumOfNextPayment;
-        this.sumOfBodyOfNextPayment = sumOfBodyOfNextPayment;
-        this.sumOfPercentOfNextPayment = sumOfPercentOfNextPayment;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public Credit getCredit() {
-        return credit;
-    }
-
-    public void setCredit(Credit credit) {
-        this.credit = credit;
-    }
-
-    public int getSumOfCredit() {
-        return sumOfCredit;
-    }
-
-    public void setSumOfCredit(int sumOfCredit) {
-        this.sumOfCredit = sumOfCredit;
-    }
-
-    public Date getDateOfNextPayment() {
-        return dateOfNextPayment;
-    }
-
-    public void setDateOfNextPayment(Date dateOfNextPayment) {
-        this.dateOfNextPayment = dateOfNextPayment;
-    }
-
-    public int getSumOfNextPayment() {
-        return sumOfNextPayment;
-    }
-
-    public void setSumOfNextPayment(int sumOfNextPayment) {
-        this.sumOfNextPayment = sumOfNextPayment;
-    }
-
-    public int getSumOfBodyOfNextPayment() {
-        return sumOfBodyOfNextPayment;
-    }
-
-    public void setSumOfBodyOfNextPayment(int sumOfBodyOfNextPayment) {
-        this.sumOfBodyOfNextPayment = sumOfBodyOfNextPayment;
-    }
-
-    public int getSumOfPercentOfNextPayment() {
-        return sumOfPercentOfNextPayment;
-    }
-
-    public void setSumOfPercentOfNextPayment(int sumOfPercentOfNextPayment) {
-        this.sumOfPercentOfNextPayment = sumOfPercentOfNextPayment;
-    }
-
-    @Override
-    public String toString() {
-        return "Offer{" +
-                "client=" + client +
-                ", credit=" + credit +
-                ", sumOfCredit=" + sumOfCredit +
-                ", dateOfNextPayment=" + dateOfNextPayment +
-                ", sumOfNextPayment=" + sumOfNextPayment +
-                ", sumOfBodyOfNextPayment=" + sumOfBodyOfNextPayment +
-                ", sumOfPercentOfNextPayment=" + sumOfPercentOfNextPayment +
-                '}';
+    public Offer(Integer id, Integer clientId, Integer creditId, int creditSum, LocalDate paymentDate, int payment, int bodySum, int percentageSum) {
+        this.id = id;
+        this.clientId = clientId;
+        this.creditId = creditId;
+        this.creditSum = creditSum;
+        this.paymentGraphic = new PaymentGraphic(paymentDate, payment, bodySum, percentageSum);
     }
 
     @Override
     public Integer getId() {
-        return null;
+        return id;
     }
-
     @Override
     public void setId(Integer id) {
+        this.id = id;
+    }
 
+    public Integer getClientId() {
+        return clientId;
+    }
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
+
+    public Integer getCreditId() {
+        return creditId;
+    }
+    public void setCreditId(Integer creditId) {
+        this.creditId = creditId;
+    }
+
+    public int getCreditSum() {
+        return creditSum;
+    }
+    public void setCreditSum(int creditSum) {
+        this.creditSum = creditSum;
+    }
+
+    public PaymentGraphic getPaymentGraphic() {
+        return paymentGraphic;
+    }
+
+    public void setPaymentGraphic(PaymentGraphic paymentGraphic) {
+        this.paymentGraphic = paymentGraphic;
+    }
+
+    public static class PaymentGraphic {
+        private LocalDate paymentDate;
+        private int payment;
+        private int bodySum;
+        private int percentageSum;
+
+        public PaymentGraphic(LocalDate paymentDate, int payment, int bodySum, int percentageSum) {
+            this.paymentDate = paymentDate;
+            this.payment = payment;
+            this.bodySum = bodySum;
+            this.percentageSum = percentageSum;
+        }
+
+        public LocalDate getPaymentDate() {
+            return paymentDate;
+        }
+
+        public void setPaymentDate(LocalDate paymentDate) {
+            this.paymentDate = paymentDate;
+        }
+
+        public int getPayment() {
+            return payment;
+        }
+
+        public void setPayment(int payment) {
+            this.payment = payment;
+        }
+
+        public int getBodySum() {
+            return bodySum;
+        }
+
+        public void setBodySum(int bodySum) {
+            this.bodySum = bodySum;
+        }
+
+        public int getPercentageSum() {
+            return percentageSum;
+        }
+
+        public void setPercentageSum(int percentageSum) {
+            this.percentageSum = percentageSum;
+        }
     }
 }

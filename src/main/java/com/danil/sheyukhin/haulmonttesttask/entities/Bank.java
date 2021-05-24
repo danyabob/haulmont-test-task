@@ -1,6 +1,6 @@
 package com.danil.sheyukhin.haulmonttesttask.entities;
 
-public class Bank implements Entity{
+public class Bank implements Entity {
 
     private Integer id;
     private String name;

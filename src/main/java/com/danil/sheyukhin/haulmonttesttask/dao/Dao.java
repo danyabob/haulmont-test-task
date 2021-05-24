@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface Dao<T extends Entity> {
 
+    int create(T object);
+
     T getById(Integer id);
 
     List<T> getAll();
-
-    int create(T object);
 
     void update(T object);
 

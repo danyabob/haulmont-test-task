@@ -1,15 +1,15 @@
 package com.danil.sheyukhin.haulmonttesttask.entities;
 
-public class Client implements Entity{
+public class Client implements Entity {
 
     private Integer id;
     private String name;
     private String phone;
     private String email;
     private String passport;
-    private int bankId;
+    private Integer bankId;
 
-    public Client(Integer id, String name, String phone, String email, String passport, int bankId) {
+    public Client(Integer id, String name, String phone, String email, String passport, Integer bankId) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -53,21 +53,23 @@ public class Client implements Entity{
         this.passport = passport;
     }
 
-    public int getBankId() {
+    public Integer getBankId() {
         return bankId;
     }
-    public void setBankId(int bankId) {
+
+    public void setBankId(Integer bankId) {
         this.bankId = bankId;
     }
 
     @Override
     public String toString() {
         return "Client{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", passport='" + passport + '\'' +
+                ", bankId=" + bankId +
                 '}';
     }
-
 }

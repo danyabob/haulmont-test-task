@@ -25,16 +25,6 @@ public class ClientDao implements Dao<Client> {
     }
 
     @Override
-    public Client getById(Integer id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM CLIENT WHERE ID = ?", clientRowMapper, id);
-    }
-
-    @Override
-    public List<Client> getAll() {
-        return jdbcTemplate.query("SELECT * FROM CLIENT", clientRowMapper);
-    }
-
-    @Override
     public int create(Client client) {
         jdbcTemplate.update("INSERT INTO CLIENT(NAME, PHONE, EMAIL, PASSPORT, BANK_ID) VALUES (?, ?, ?, ?, ?)",
                 client.getName(),
@@ -42,7 +32,12 @@ public class ClientDao implements Dao<Client> {
                 client.getEmail(),
                 client.getPassport(),
                 client.getBankId());
-        return jdbcTemplate.queryForObject("SELECT ID FROM CLIENT WHERE PASSPORT = ?", Integer.class, client.getPassport());
+        return jdbcTemplate.queryForObject("SELECT ID FROM CLIENT WHERE NAME = ? AND PHONE = ? AND EMAIL = ? AND PASSPORT = ? AND BANK_ID = ?", Integer.class,
+                client.getName(),
+                client.getPhone(),
+                client.getEmail(),
+                client.getPassport(),
+                client.getBankId());
     }
 
 //    @Override
@@ -59,6 +54,16 @@ public class ClientDao implements Dao<Client> {
 //        }, keyHolder);
 //        return (int)keyHolder.getKey();
 //    }
+
+    @Override
+    public Client getById(Integer id) {
+        return jdbcTemplate.queryForObject("SELECT * FROM CLIENT WHERE ID = ?", clientRowMapper, id);
+    }
+
+    @Override
+    public List<Client> getAll() {
+        return jdbcTemplate.query("SELECT * FROM CLIENT", clientRowMapper);
+    }
 
     @Override
     public void update(Client client) {
