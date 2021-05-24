@@ -42,9 +42,9 @@ public class OfferController {
         return offerDao.create(offer);
     }
 
-    @GetMapping("/payment")
-    List<Payment> getPayments() {
-        Offer offer = offerDao.getById(1);
+    @GetMapping("/payment/{id}")
+    List<Payment> getPayments(@PathVariable Integer id) {
+        Offer offer = offerDao.getById(id);
         return offer.getPayments();
     }
 }

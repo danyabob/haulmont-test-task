@@ -38,6 +38,22 @@ public class Payment {
         return payments;
     }
 
+    public LocalDate getPaymentDate() {
+        return paymentDate;
+    }
+
+    public double getPaymentSum() {
+        return paymentSum;
+    }
+
+    public double getBodySum() {
+        return bodySum;
+    }
+
+    public double getPercentageSum() {
+        return percentageSum;
+    }
+
     @Override
     public String toString() {
         return "Payment{" +
@@ -46,9 +62,5 @@ public class Payment {
                 ", bodySum=" + bodySum +
                 ", percentageSum=" + percentageSum +
                 '}';
-    }
-
-    public static void main(String[] args) {
-        System.out.println(getPayments(500000, 36, 20));
     }
 }
