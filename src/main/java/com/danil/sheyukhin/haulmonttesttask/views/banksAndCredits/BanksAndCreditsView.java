@@ -69,7 +69,7 @@ public class BanksAndCreditsView extends VerticalLayout {
 
         newCreditButton = new Button("Добавить кредит", VaadinIcon.PLUS.create());
         newCreditButton.setEnabled(false);
-        newCreditButton.addClickListener(e -> creditEditor.editCredit(new Credit(null, bankId, 0, 0)));
+        newCreditButton.addClickListener(e -> creditEditor.editCredit(new Credit(null, bankId, "", 0, 0)));
 
         HorizontalLayout addCreditButtonLayout = new HorizontalLayout(newCreditButton);
 
@@ -108,8 +108,9 @@ public class BanksAndCreditsView extends VerticalLayout {
 
     private void loadCredits() {
         creditGrid.setItems(creditDao.getAllByBankId(bankId));
-        creditGrid.setColumns("limit", "percentage");
-        creditGrid.getColumnByKey("limit").setHeader("Лимит кредита");
-        creditGrid.getColumnByKey("percentage").setHeader("Процентная ставка");
+        creditGrid.setColumns("name", "limit", "percentage");
+        creditGrid.getColumnByKey("name").setHeader("Название");
+        creditGrid.getColumnByKey("limit").setHeader("Лимит кредита, руб");
+        creditGrid.getColumnByKey("percentage").setHeader("Процентная ставка, %");
     }
 }

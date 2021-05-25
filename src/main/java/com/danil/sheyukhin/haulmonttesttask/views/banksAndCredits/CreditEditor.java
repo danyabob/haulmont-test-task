@@ -23,9 +23,9 @@ public class CreditEditor extends VerticalLayout implements KeyNotifier {
     private Credit credit;
     private ChangeHandler changeHandler;
 
-    //    TextField name = new TextField("ФИО");
-    IntegerField limit = new IntegerField("Лимит кредита");
-    IntegerField percentage = new IntegerField("Ставка");
+    TextField name = new TextField("Название");
+    IntegerField limit = new IntegerField("Лимит, руб");
+    IntegerField percentage = new IntegerField("Ставка, %");
     HorizontalLayout limitPercentageLayout = new HorizontalLayout(limit, percentage);
 
     Button save = new Button("Сохранить", VaadinIcon.CHECK.create());

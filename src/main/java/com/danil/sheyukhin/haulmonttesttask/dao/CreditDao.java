@@ -24,12 +24,14 @@ public class CreditDao implements Dao<Credit> {
 
     @Override
     public int create(Credit credit) {
-        jdbcTemplate.update("INSERT INTO CREDIT(BANK_ID, LIMIT, PERCENTAGE) VALUES (?, ?, ?)",
+        jdbcTemplate.update("INSERT INTO CREDIT(BANK_ID, NAME, LIMIT, PERCENTAGE) VALUES (?, ?, ?, ?)",
                 credit.getBankId(),
+                credit.getName(),
                 credit.getLimit(),
                 credit.getPercentage());
-        return jdbcTemplate.queryForObject("SELECT ID FROM CREDIT WHERE BANK_ID = ? AND LIMIT = ? AND PERCENTAGE = ?", Integer.class,
+        return jdbcTemplate.queryForObject("SELECT ID FROM CREDIT WHERE BANK_ID = ? AND NAME = ? AND LIMIT = ? AND PERCENTAGE = ?", Integer.class,
                 credit.getBankId(),
+                credit.getName(),
                 credit.getLimit(),
                 credit.getPercentage());
     }
@@ -51,8 +53,9 @@ public class CreditDao implements Dao<Credit> {
 
     @Override
     public void update(Credit credit) {
-        jdbcTemplate.update("UPDATE CREDIT SET BANK_ID = ?, LIMIT = ?, PERCENTAGE = ? WHERE ID = ?",
+        jdbcTemplate.update("UPDATE CREDIT SET BANK_ID = ?, NAME = ?, LIMIT = ?, PERCENTAGE = ? WHERE ID = ?",
                 credit.getBankId(),
+                credit.getName(),
                 credit.getLimit(),
                 credit.getPercentage(),
                 credit.getId());
@@ -69,6 +72,7 @@ public class CreditDao implements Dao<Credit> {
         public Credit mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Credit(rs.getInt("ID"),
                     rs.getInt("BANK_ID"),
+                    rs.getString("NAME"),
                     rs.getInt("LIMIT"),
                     rs.getInt("PERCENTAGE"));
         }

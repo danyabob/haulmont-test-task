@@ -4,12 +4,14 @@ public class Credit implements Entity {
 
     private Integer id = null;
     private Integer bankId;
+    private String name;
     private int limit;
     private int percentage;
 
-    public Credit(Integer id, Integer bankId, int limit, int percentage) {
+    public Credit(Integer id, Integer bankId, String name, int limit, int percentage) {
         this.id = id;
         this.bankId = bankId;
+        this.name = name;
         this.limit = limit;
         this.percentage = percentage;
     }
@@ -28,6 +30,13 @@ public class Credit implements Entity {
     }
     public void setBankId(Integer bankId) {
         this.bankId = bankId;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getLimit() {
@@ -51,6 +60,7 @@ public class Credit implements Entity {
         return "Credit{" +
                 "id=" + id +
                 ", bankId=" + bankId +
+                ", name='" + name + '\'' +
                 ", limit=" + limit +
                 ", percentage=" + percentage +
                 '}';
