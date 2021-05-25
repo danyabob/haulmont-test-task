@@ -5,6 +5,7 @@ import com.danil.sheyukhin.haulmonttesttask.entities.Client;
 import com.danil.sheyukhin.haulmonttesttask.views.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -23,7 +24,10 @@ public class ClientsView extends VerticalLayout {
     public ClientsView(ClientDao clientDao, ClientEditor clientEditor) {
         this.clientDao = clientDao;
         this.clientEditor = clientEditor;
+
         clientGrid = new Grid<>(Client.class);
+        clientGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
+                GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         newClientButton = new Button("Добавить клиента", VaadinIcon.PLUS.create());
         newClientButton.addClickListener(e -> clientEditor.editClient(new Client(null, "", "", "", "", 0)));
 

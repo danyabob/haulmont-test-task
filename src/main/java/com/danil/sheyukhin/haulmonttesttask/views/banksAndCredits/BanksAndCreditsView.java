@@ -7,6 +7,7 @@ import com.danil.sheyukhin.haulmonttesttask.entities.Credit;
 import com.danil.sheyukhin.haulmonttesttask.views.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -42,6 +43,8 @@ public class BanksAndCreditsView extends VerticalLayout {
         HorizontalLayout addBankButtonLayout = new HorizontalLayout(newBankButton, editBankButton);
 
         bankGrid = new Grid<>(Bank.class);
+        bankGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
+                GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         loadBanks();
 
         bankGrid.setHeight("300px");
@@ -74,6 +77,8 @@ public class BanksAndCreditsView extends VerticalLayout {
         HorizontalLayout addCreditButtonLayout = new HorizontalLayout(newCreditButton);
 
         creditGrid = new Grid<>(Credit.class);
+        creditGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
+                GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         loadCredits();
 
         creditGrid.setHeight("300px");
