@@ -1,4 +1,4 @@
-package com.danil.sheyukhin.haulmonttesttask.views;
+package com.danil.sheyukhin.haulmonttesttask.views.clients;
 
 import com.danil.sheyukhin.haulmonttesttask.dao.ClientDao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Client;
@@ -17,22 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SpringComponent
 @UIScope
 public class ClientEditor extends VerticalLayout implements KeyNotifier {
-
     private ClientDao clientDao;
-
-    /**
-     * The currently edited customer
-     */
     private Client client;
 
-    /* Fields to edit properties in Customer entity */
     TextField name = new TextField("ФИО");
     TextField phone = new TextField("Телефон");
     TextField email = new TextField("e-mail");
     TextField passport = new TextField("Паспорт");
+    HorizontalLayout namePhoneEmailPassport = new HorizontalLayout(name, phone, email, passport);
 
-    /* Action buttons */
-    // TODO why more code?
     Button save = new Button("Сохранить", VaadinIcon.CHECK.create());
     Button cancel = new Button("Отменить");
     Button delete = new Button("Удалить", VaadinIcon.TRASH.create());
@@ -45,12 +38,12 @@ public class ClientEditor extends VerticalLayout implements KeyNotifier {
     public ClientEditor(ClientDao clientDao) {
         this.clientDao = clientDao;
 
-        add(name, phone, email, passport, actions);
+        name.setWidthFull();
+        namePhoneEmailPassport.setSizeFull();
+        add(namePhoneEmailPassport, actions);
 
-        // bind using naming convention
         binder.bindInstanceFields(this);
 
-        // Configure and style components
         setSpacing(true);
 
         save.getElement().getThemeList().add("primary");
@@ -58,10 +51,9 @@ public class ClientEditor extends VerticalLayout implements KeyNotifier {
 
         addKeyPressListener(Key.ENTER, e -> save());
 
-        // wire action buttons to save, delete and reset
         save.addClickListener(e -> save());
         delete.addClickListener(e -> delete());
-        cancel.addClickListener(e -> editClient(client));
+        cancel.addClickListener(e -> editClient(null));
         setVisible(false);
     }
 
@@ -71,7 +63,11 @@ public class ClientEditor extends VerticalLayout implements KeyNotifier {
     }
 
     void save() {
-        clientDao.update(client);
+        if (client.getId() != null) {
+            clientDao.update(client);
+        } else {
+            clientDao.create(client);
+        }
         changeHandler.onChange();
     }
 
@@ -79,35 +75,26 @@ public class ClientEditor extends VerticalLayout implements KeyNotifier {
         void onChange();
     }
 
-    public final void editClient(Client c) {
-        if (c == null) {
+    public final void editClient(Client newClient) {
+        if (newClient == null) {
             setVisible(false);
             return;
         }
-        final boolean persisted = c.getId() != null;
-        if (persisted) {
-            // Find fresh entity for editing
-            client = clientDao.getById(c.getId());
+        if (newClient.getId() != null) {
+            client = clientDao.getById(newClient.getId());
         }
         else {
-            client = c;
+            client = newClient;
         }
-        cancel.setVisible(persisted);
 
-        // Bind customer properties to similarly named fields
-        // Could also use annotation or "manual binding" or programmatically
-        // moving values from fields to entities before saving
         binder.setBean(client);
 
         setVisible(true);
 
-        // Focus first name initially
         name.focus();
     }
 
     public void setChangeHandler(ChangeHandler h) {
-        // ChangeHandler is notified when either save or delete
-        // is clicked
         changeHandler = h;
     }
 
