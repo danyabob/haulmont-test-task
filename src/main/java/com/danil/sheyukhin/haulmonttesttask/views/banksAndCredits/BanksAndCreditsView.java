@@ -1,10 +1,9 @@
-package com.danil.sheyukhin.haulmonttesttask.views.banks;
+package com.danil.sheyukhin.haulmonttesttask.views.banksAndCredits;
 
 import com.danil.sheyukhin.haulmonttesttask.dao.BankDao;
 import com.danil.sheyukhin.haulmonttesttask.dao.CreditDao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Bank;
 import com.danil.sheyukhin.haulmonttesttask.entities.Credit;
-import com.danil.sheyukhin.haulmonttesttask.views.CreditsView.CreditEditor;
 import com.danil.sheyukhin.haulmonttesttask.views.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -17,7 +16,7 @@ import com.vaadin.flow.theme.lumo.Lumo;
 
 @Route("banks")
 @Theme(value = Lumo.class)
-public class BanksView extends VerticalLayout {
+public class BanksAndCreditsView extends VerticalLayout {
     private BankDao bankDao;
     private CreditDao creditDao;
     private BankEditor bankEditor;
@@ -29,7 +28,7 @@ public class BanksView extends VerticalLayout {
     private Button newCreditButton;
     private Integer bankId = null;
 
-    public BanksView(BankDao bankDao, CreditDao creditDao, BankEditor bankEditor, CreditEditor creditEditor) {
+    public BanksAndCreditsView(BankDao bankDao, CreditDao creditDao, BankEditor bankEditor, CreditEditor creditEditor) {
         this.bankDao = bankDao;
         this.creditDao = creditDao;
         this.bankEditor = bankEditor;

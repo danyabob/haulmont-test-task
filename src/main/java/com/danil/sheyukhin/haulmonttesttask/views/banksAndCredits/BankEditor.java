@@ -1,15 +1,13 @@
-package com.danil.sheyukhin.haulmonttesttask.views.CreditsView;
+package com.danil.sheyukhin.haulmonttesttask.views.banksAndCredits;
 
-import com.danil.sheyukhin.haulmonttesttask.dao.CreditDao;
-import com.danil.sheyukhin.haulmonttesttask.entities.Client;
-import com.danil.sheyukhin.haulmonttesttask.entities.Credit;
+import com.danil.sheyukhin.haulmonttesttask.dao.BankDao;
+import com.danil.sheyukhin.haulmonttesttask.entities.Bank;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyNotifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.spring.annotation.SpringComponent;
@@ -18,28 +16,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringComponent
 @UIScope
-public class CreditEditor extends VerticalLayout implements KeyNotifier {
-    private CreditDao creditDao;
-    private Credit credit;
-    private ChangeHandler changeHandler;
+public class BankEditor extends VerticalLayout implements KeyNotifier {
+    private BankDao bankDao;
+    private Bank bank;
 
-    //    TextField name = new TextField("ФИО");
-    IntegerField limit = new IntegerField("Лимит кредита");
-    IntegerField percentage = new IntegerField("Ставка");
-    HorizontalLayout limitPercentageLayout = new HorizontalLayout(limit, percentage);
+    TextField name = new TextField("Название банка");
 
     Button save = new Button("Сохранить", VaadinIcon.CHECK.create());
     Button cancel = new Button("Отменить");
     Button delete = new Button("Удалить", VaadinIcon.TRASH.create());
     HorizontalLayout actions = new HorizontalLayout(save, cancel, delete);
 
-    Binder<Credit> binder = new Binder<>(Credit.class);
+    Binder<Bank> binder = new Binder<>(Bank.class);
+    private ChangeHandler changeHandler;
 
     @Autowired
-    public CreditEditor(CreditDao creditDao) {
-        this.creditDao = creditDao;
+    public BankEditor(BankDao bankDao) {
+        this.bankDao = bankDao;
 
-        add(limitPercentageLayout, actions);
+        add(name, actions);
 
         binder.bindInstanceFields(this);
 
@@ -52,20 +47,20 @@ public class CreditEditor extends VerticalLayout implements KeyNotifier {
 
         save.addClickListener(e -> save());
         delete.addClickListener(e -> delete());
-        cancel.addClickListener(e -> editCredit(null));
+        cancel.addClickListener(e -> editBank(null));
         setVisible(false);
     }
 
     void delete() {
-        creditDao.delete(credit.getId());
+        bankDao.delete(bank.getId());
         changeHandler.onChange();
     }
 
     void save() {
-        if (credit.getId() != null) {
-            creditDao.update(credit);
+        if (bank.getId() != null) {
+            bankDao.update(bank);
         } else {
-            creditDao.create(credit);
+            bankDao.create(bank);
         }
         changeHandler.onChange();
     }
@@ -74,27 +69,26 @@ public class CreditEditor extends VerticalLayout implements KeyNotifier {
         void onChange();
     }
 
-    public final void editCredit(Credit newCredit) {
-        if (newCredit == null) {
+    public final void editBank(Bank newBank) {
+        if (newBank == null) {
             setVisible(false);
             return;
         }
-        if (newCredit.getId() != null) {
-            credit = creditDao.getById(newCredit.getId());
+        if (newBank.getId() != null) {
+            bank = bankDao.getById(newBank.getId());
         }
         else {
-            credit = newCredit;
+            bank = newBank;
         }
 
-        binder.setBean(credit);
+        binder.setBean(bank);
 
         setVisible(true);
 
-        limit.focus();
+        name.focus();
     }
 
     public void setChangeHandler(ChangeHandler h) {
         changeHandler = h;
     }
-
 }
