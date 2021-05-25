@@ -44,6 +44,11 @@ public class CreditDao implements Dao<Credit> {
         return jdbcTemplate.query("SELECT * FROM CREDIT", creditRowMapper);
     }
 
+    public List<Credit> getAllByBankId(Integer bankId) {
+        return jdbcTemplate.query("SELECT * FROM CREDIT WHERE BANK_ID = ?",
+                creditRowMapper, bankId);
+    }
+
     @Override
     public void update(Credit credit) {
         jdbcTemplate.update("UPDATE CREDIT SET BANK_ID = ?, LIMIT = ?, PERCENTAGE = ? WHERE ID = ?",

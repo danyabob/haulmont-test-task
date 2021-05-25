@@ -23,9 +23,11 @@ public class CreditsView extends VerticalLayout {
     public CreditsView(CreditDao creditDao, CreditEditor creditEditor) {
         this.creditDao = creditDao;
         this.creditEditor = creditEditor;
+
         creditGrid = new Grid<>(Credit.class);
         newCreditButton = new Button("Добавить кредит", VaadinIcon.PLUS.create());
         newCreditButton.addClickListener(e -> creditEditor.editCredit(new Credit(null, 1, 0, 0)));
+        HorizontalLayout addButtonLayout = new HorizontalLayout(newCreditButton);
 
         loadCredits();
 
@@ -34,13 +36,12 @@ public class CreditsView extends VerticalLayout {
             creditEditor.editCredit(e.getValue());
         });
 
-        HorizontalLayout addButtonLayout = new HorizontalLayout(newCreditButton);
-        add(MainView.menuBar(), addButtonLayout, creditGrid, creditEditor);
-
         creditEditor.setChangeHandler(() -> {
             creditEditor.setVisible(false);
             loadCredits();
         });
+
+        add(MainView.menuBar(), addButtonLayout, creditGrid, creditEditor);
     }
 
     private void loadCredits() {
