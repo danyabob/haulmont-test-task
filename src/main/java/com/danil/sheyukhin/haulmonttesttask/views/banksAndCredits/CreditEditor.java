@@ -39,6 +39,12 @@ public class CreditEditor extends VerticalLayout implements KeyNotifier {
     public CreditEditor(CreditDao creditDao) {
         this.creditDao = creditDao;
 
+        name.setMaxLength(32);
+        limit.setMin(0);
+        limit.setMax(10000000);
+        percentage.setMin(0);
+        percentage.setMax(100);
+
         add(limitPercentageLayout, actions);
 
         binder.bindInstanceFields(this);
@@ -48,9 +54,12 @@ public class CreditEditor extends VerticalLayout implements KeyNotifier {
         save.getElement().getThemeList().add("primary");
         delete.getElement().getThemeList().add("error");
 
-        addKeyPressListener(Key.ENTER, e -> save());
-
-        save.addClickListener(e -> save());
+        save.addClickListener(e -> {
+            if (limit.getValue() > limit.getMin() && limit.getValue() <= limit.getMax() &&
+                    percentage.getValue() > percentage.getMin() && percentage.getValue() <= percentage.getMax()) {
+                save();
+            }
+        });
         delete.addClickListener(e -> delete());
         cancel.addClickListener(e -> editCredit(null));
         setVisible(false);

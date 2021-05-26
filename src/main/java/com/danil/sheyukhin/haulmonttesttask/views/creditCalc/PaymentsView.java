@@ -19,6 +19,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Route("payments")
@@ -36,9 +37,12 @@ public class PaymentsView extends VerticalLayout {
     private H6 creditSum;
     private H6 fullPaymentSum;
     private H6 fullPercentageSum;
+    private H6 creditDuration;
+    private H6 percentage;
     private Grid<Offer.Payment> paymentGrid;
     private List<Offer.Payment> payments;
     private static Offer tempOffer;
+    private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     public PaymentsView(ClientDao clientDao, BankDao bankDao, CreditDao creditDao, OfferDao offerDao) {
         this.clientDao = clientDao;
@@ -50,13 +54,15 @@ public class PaymentsView extends VerticalLayout {
         payments = offer.getPayments(credit.getPercentage());
 
         clientName = new H6("Заёмщик: " + offer.getClientName() + ",");
-        creditSum = new H6("Сумма кредита: " + offer.getSumma() + " руб");
-        fullPaymentSum = new H6("Сумма с процентами: " + getFullPaymentSum() + " руб,");
-        fullPercentageSum = new H6("Переплата: " + getFullPercentageSum() + " руб");
+        creditSum = new H6("Сумма кредита: " + offer.getSumma() + " руб,");
+        creditDuration = new H6("Срок кредита: " + offer.getDuration() + " мес");
+        fullPaymentSum = new H6("Сумма с процентами: " + decimalFormat.format(getFullPaymentSum()) + " руб,");
+        fullPercentageSum = new H6("Переплата: " + decimalFormat.format(getFullPercentageSum()) + " руб,");
+        percentage = new H6("Процентная ставка: " + credit.getPercentage() + " %");
 
-        HorizontalLayout clientNameCreditSum = new HorizontalLayout(clientName, creditSum);
-        HorizontalLayout fullPaymentSumFullPercentageSum = new HorizontalLayout(fullPaymentSum, fullPercentageSum);
-        VerticalLayout clientInfoLayout = new VerticalLayout(clientNameCreditSum, fullPaymentSumFullPercentageSum);
+        HorizontalLayout clientNameCreditSumCreditDuration = new HorizontalLayout(clientName, creditSum, creditDuration);
+        HorizontalLayout fullPaymentSumFullPercentageSumPercentage = new HorizontalLayout(fullPaymentSum, fullPercentageSum, percentage);
+        VerticalLayout clientInfoLayout = new VerticalLayout(clientNameCreditSumCreditDuration, fullPaymentSumFullPercentageSumPercentage);
         clientInfoLayout.setMargin(false);
         clientInfoLayout.setPadding(false);
 
@@ -79,11 +85,10 @@ public class PaymentsView extends VerticalLayout {
 
     private double getFullPercentageSum() {
         double sum = 0;
-        double scale = Math.pow(10, 2);
         for (Offer.Payment payment : payments) {
             sum += payment.getPercentageSum();
         }
-        return Math.ceil(sum * scale) / scale;
+        return sum;
     }
 
     private double getFullPaymentSum() {

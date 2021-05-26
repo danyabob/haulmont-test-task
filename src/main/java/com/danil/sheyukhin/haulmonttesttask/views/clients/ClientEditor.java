@@ -39,6 +39,10 @@ public class ClientEditor extends VerticalLayout implements KeyNotifier {
         this.clientDao = clientDao;
 
         name.setWidthFull();
+        name.setMaxLength(32);
+        phone.setMaxLength(32);
+        email.setMaxLength(32);
+        passport.setMaxLength(32);
         namePhoneEmailPassport.setSizeFull();
         add(namePhoneEmailPassport, actions);
 

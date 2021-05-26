@@ -34,6 +34,8 @@ public class BankEditor extends VerticalLayout implements KeyNotifier {
     public BankEditor(BankDao bankDao) {
         this.bankDao = bankDao;
 
+        name.setMaxLength(32);
+
         add(name, actions);
 
         binder.bindInstanceFields(this);

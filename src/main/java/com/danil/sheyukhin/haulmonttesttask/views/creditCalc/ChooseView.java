@@ -9,14 +9,13 @@ import com.danil.sheyukhin.haulmonttesttask.entities.Client;
 import com.danil.sheyukhin.haulmonttesttask.entities.Credit;
 import com.danil.sheyukhin.haulmonttesttask.entities.Offer;
 import com.danil.sheyukhin.haulmonttesttask.views.MainView;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.listbox.ListBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
@@ -28,8 +27,11 @@ import java.util.List;
 @Theme(value = Lumo.class)
 public class ChooseView extends VerticalLayout {
     private ClientDao clientDao;
+    private Client client;
     private BankDao bankDao;
+    private Bank bank;
     private CreditDao creditDao;
+    private Credit credit;
     private OfferDao offerDao;
     private Offer offer;
     private List<Client> clients;
@@ -38,13 +40,13 @@ public class ChooseView extends VerticalLayout {
     private ListBox<Client> clientListBox = new ListBox<>();
     private ListBox<Bank> bankListBox = new ListBox<>();
     private ListBox<Credit> creditListBox = new ListBox<>();
-    private IntegerField limit = new IntegerField("Сумма кредита, руб");
-    private IntegerField duration = new IntegerField("Срок кредита, мес");
+    private IntegerField limit = new IntegerField("Укажите сумму кредита, руб");
+    private IntegerField duration = new IntegerField("Укажите срок кредита, мес");
     private Button calcButton = new Button("Рассчитать");
     private Binder<Offer> binder = new Binder<>(Offer.class);
-    private Integer clientId;
-    private Integer bankId;
-    private Integer creditId;
+    private boolean clientIsChoosed = false;
+    private boolean bankIsChoosed = false;
+    private boolean creditIsChoosed = false;
 
     public ChooseView(ClientDao clientDao, BankDao bankDao, CreditDao creditDao, OfferDao offerDao) {
         this.clientDao = clientDao;
@@ -56,7 +58,9 @@ public class ChooseView extends VerticalLayout {
         clients = clientDao.getAll();
         clientListBox.setItems(clients);
         clientListBox.addValueChangeListener(e -> {
-            clientId = e.getValue().getId();
+            client = e.getValue();
+            clientIsChoosed = true;
+            calcButtonEnableListener();
         });
         VerticalLayout clientLayout = new VerticalLayout(clientLabel, clientListBox);
         clientLayout.setPadding(false);
@@ -66,10 +70,13 @@ public class ChooseView extends VerticalLayout {
         banks = bankDao.getAll();
         bankListBox.setItems(banks);
         bankListBox.addValueChangeListener(event -> {
-                bankId = event.getValue().getId();
-                credits = creditDao.getAllByBankId(bankId);
+                bank = event.getValue();
+                credits = creditDao.getAllByBankId(bank.getId());
                 creditListBox.setItems(credits);
                 creditListBox.setVisible(true);
+                bankIsChoosed = true;
+                creditIsChoosed = false;
+                calcButtonEnableListener();
         });
         VerticalLayout bankLayout = new VerticalLayout(bankLabel, bankListBox);
         bankLayout.setSizeFull();
@@ -79,7 +86,13 @@ public class ChooseView extends VerticalLayout {
         H6 creditLabel = new H6("Выберите доступный кредит:");
         creditListBox.setVisible(false);
         creditListBox.addValueChangeListener(e -> {
-            creditId = e.getValue().getId();
+            if (e.getValue() != null) {
+                credit = e.getValue();
+                creditIsChoosed = true;
+                calcButtonEnableListener();
+                limit.setMax(credit.getLimit());
+                limit.setValue(credit.getLimit());
+            }
         });
         VerticalLayout creditLayout = new VerticalLayout(creditLabel, creditListBox);
         creditLayout.setSizeFull();
@@ -92,11 +105,21 @@ public class ChooseView extends VerticalLayout {
         VerticalLayout leftVerticalLayout = new VerticalLayout(clientLayout, bankAndCreditLayout);
         leftVerticalLayout.setSizeFull();
 
-        binder.bindInstanceFields(this);
         limit.setWidthFull();
+        limit.setMin(0);
         duration.setWidthFull();
+        duration.setValue(12);
+        duration.setMax(360);
+        duration.setMin(0);
+        calcButton.setEnabled(false);
         calcButton.addClickListener(e -> {
-            offerDao.create(new Offer(null, clientId, creditId, limit.getValue(), duration.getValue()));
+            if (limit.getValue() > 0 && limit.getValue() <= limit.getMax() && duration.getValue() > 0 && duration.getValue() <= duration.getMax()) {
+                Integer offerId = offerDao.create(new Offer(null, client.getId(), credit.getId(), limit.getValue(), duration.getValue()));
+                offer = offerDao.getById(offerId);
+                offer.setClientName(client.getName());
+                PaymentsView.setTempOffer(offer);
+                UI.getCurrent().navigate("payments");
+            }
         });
 
         VerticalLayout rightVerticalLayout = new VerticalLayout(limit, duration, calcButton);
@@ -108,6 +131,14 @@ public class ChooseView extends VerticalLayout {
         mainLayout.setMargin(false);
 
         add(MainView.menuBar(), mainLayout);
+    }
+
+    private void calcButtonEnableListener() {
+        if (clientIsChoosed && bankIsChoosed && creditIsChoosed) {
+            calcButton.setEnabled(true);
+        } else {
+            calcButton.setEnabled(false);
+        }
     }
 
 }
