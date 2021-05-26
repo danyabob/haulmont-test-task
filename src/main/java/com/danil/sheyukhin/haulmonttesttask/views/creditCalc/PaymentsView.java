@@ -12,6 +12,7 @@ import com.danil.sheyukhin.haulmonttesttask.views.MainView;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -31,10 +32,10 @@ public class PaymentsView extends VerticalLayout {
     private Credit credit;
     private OfferDao offerDao;
     private Offer offer;
-    private H4 clientName;
-    private H4 creditSum;
-    private H4 fullPaymentSum;
-    private H4 fullPercentageSum;
+    private H6 clientName;
+    private H6 creditSum;
+    private H6 fullPaymentSum;
+    private H6 fullPercentageSum;
     private Grid<Offer.Payment> paymentGrid;
     private List<Offer.Payment> payments;
     private static Offer tempOffer;
@@ -48,14 +49,16 @@ public class PaymentsView extends VerticalLayout {
         credit = creditDao.getById(offer.getCreditId());
         payments = offer.getPayments(credit.getPercentage());
 
-        clientName = new H4("Заёмщик: " + offer.getClientName() + ",");
-        creditSum = new H4("Сумма кредита: " + offer.getSumma() + " руб");
-        fullPaymentSum = new H4("Сумма с процентами: " + getFullPaymentSum() + " руб,");
-        fullPercentageSum = new H4("Переплата: " + getFullPercentageSum() + " руб");
+        clientName = new H6("Заёмщик: " + offer.getClientName() + ",");
+        creditSum = new H6("Сумма кредита: " + offer.getSumma() + " руб");
+        fullPaymentSum = new H6("Сумма с процентами: " + getFullPaymentSum() + " руб,");
+        fullPercentageSum = new H6("Переплата: " + getFullPercentageSum() + " руб");
 
         HorizontalLayout clientNameCreditSum = new HorizontalLayout(clientName, creditSum);
         HorizontalLayout fullPaymentSumFullPercentageSum = new HorizontalLayout(fullPaymentSum, fullPercentageSum);
         VerticalLayout clientInfoLayout = new VerticalLayout(clientNameCreditSum, fullPaymentSumFullPercentageSum);
+        clientInfoLayout.setMargin(false);
+        clientInfoLayout.setPadding(false);
 
         paymentGrid = new Grid<>(Offer.Payment.class);
         loadPayments();

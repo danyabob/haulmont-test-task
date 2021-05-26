@@ -57,12 +57,6 @@ public class Credit implements Entity {
 
     @Override
     public String toString() {
-        return "Credit{" +
-                "id=" + id +
-                ", bankId=" + bankId +
-                ", name='" + name + '\'' +
-                ", limit=" + limit +
-                ", percentage=" + percentage +
-                '}';
+        return name + ", " + limit + " руб, " + percentage + " %";
     }
 }

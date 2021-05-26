@@ -63,13 +63,6 @@ public class Client implements Entity {
 
     @Override
     public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", passport='" + passport + '\'' +
-                ", bankId=" + bankId +
-                '}';
+        return name + ", " + phone + ", " + email + ", " + passport;
     }
 }

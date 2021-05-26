@@ -95,13 +95,7 @@ public class Offer implements Entity {
 
     @Override
     public String toString() {
-        return "Offer{" +
-                "id=" + id +
-                ", clientId=" + clientId +
-                ", creditId=" + creditId +
-                ", summa=" + summa +
-                ", duration=" + duration +
-                '}';
+        return "" + getSumma();
     }
 
     public static class Payment {

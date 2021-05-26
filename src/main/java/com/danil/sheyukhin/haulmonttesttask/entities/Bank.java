@@ -29,9 +29,6 @@ public class Bank implements Entity {
 
     @Override
     public String toString() {
-        return "Bank{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "" + name;
     }
 }

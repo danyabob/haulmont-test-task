@@ -1,6 +1,5 @@
 package com.danil.sheyukhin.haulmonttesttask.views;
 
-import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -21,7 +20,7 @@ public class MainView extends VerticalLayout {
         menuBar.addItem("Список клиентов", e -> menuBar.getUI().ifPresent(ui -> ui.navigate("clients")));
         menuBar.addItem("Банки и доступные кредиты", e -> menuBar.getUI().ifPresent(ui -> ui.navigate("banks")));
         menuBar.addItem("Действующие кредиты", e -> menuBar.getUI().ifPresent(ui -> ui.navigate("offers")));
-        menuBar.addItem("Рассчитать кредит", e -> menuBar.getUI().ifPresent(ui -> ui.navigate("payments")));
+        menuBar.addItem("Рассчитать кредит", e -> menuBar.getUI().ifPresent(ui -> ui.navigate("choose")));
         return menuBar;
     }
 }
