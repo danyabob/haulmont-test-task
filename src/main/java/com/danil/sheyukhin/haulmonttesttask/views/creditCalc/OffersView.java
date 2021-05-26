@@ -6,6 +6,7 @@ import com.danil.sheyukhin.haulmonttesttask.dao.CreditDao;
 import com.danil.sheyukhin.haulmonttesttask.dao.OfferDao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Offer;
 import com.danil.sheyukhin.haulmonttesttask.views.MainView;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -35,11 +36,9 @@ public class OffersView extends VerticalLayout {
         loadOffers();
         offerGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        offerGrid.asSingleSelect().addValueChangeListener(e -> {
-            if (e.getValue() != null) {
-                PaymentsView.setOfferId(e.getValue().getId());
-                offerGrid.getUI().ifPresent(ui -> ui.navigate("payments"));
-            }
+        offerGrid.addItemClickListener(e -> {
+            PaymentsView.setTempOffer(e.getItem());
+            UI.getCurrent().navigate("payments");
         });
 
         add(MainView.menuBar(), offerGrid);
