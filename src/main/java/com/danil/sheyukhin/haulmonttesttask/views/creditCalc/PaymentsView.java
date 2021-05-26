@@ -30,23 +30,25 @@ public class PaymentsView extends VerticalLayout {
     private OfferDao offerDao;
     private Offer offer;
     private Grid<Offer.Payment> paymentGrid;
+    private static Integer offerId;
     private Button calcButton;
 
-    public PaymentsView(ClientDao clientDao, BankDao bankDao, CreditDao creditDao) {
+    public PaymentsView(ClientDao clientDao, BankDao bankDao, CreditDao creditDao, OfferDao offerDao) {
         this.clientDao = clientDao;
         this.bankDao = bankDao;
         this.creditDao = creditDao;
+        this.offerDao = offerDao;
 
-        offer = new Offer(null, 1, 1, 100000, 24);
+        offer = offerDao.getById(offerId);
         credit = creditDao.getById(1);
 
         calcButton = new Button("Рассчитать кредит", VaadinIcon.PLUS.create());
-        calcButton.addClickListener(e -> loadPayments());
+//        calcButton.addClickListener(e -> loadPayments());
 
         paymentGrid = new Grid<>(Offer.Payment.class);
+        loadPayments();
         paymentGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        paymentGrid.setHeight("300px");
 
         add(MainView.menuBar(), calcButton, paymentGrid);
     }
@@ -58,5 +60,9 @@ public class PaymentsView extends VerticalLayout {
         paymentGrid.getColumnByKey("paymentSum").setHeader("Сумма платежа");
         paymentGrid.getColumnByKey("bodySum").setHeader("Сумма гашения тела кредита");
         paymentGrid.getColumnByKey("percentageSum").setHeader("Сумма гашения процентов");
+    }
+
+    public static void setOfferId(Integer offerId) {
+        PaymentsView.offerId = offerId;
     }
 }
