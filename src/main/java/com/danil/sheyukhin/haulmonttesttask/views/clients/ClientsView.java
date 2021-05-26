@@ -25,26 +25,25 @@ public class ClientsView extends VerticalLayout {
         this.clientDao = clientDao;
         this.clientEditor = clientEditor;
 
+        newClientButton = new Button("Добавить клиента", VaadinIcon.PLUS.create());
+        newClientButton.addClickListener(e -> clientEditor.editClient(new Client(null, "", "", "", "", 0)));
+        HorizontalLayout addButtonLayout = new HorizontalLayout(newClientButton);
+
         clientGrid = new Grid<>(Client.class);
         clientGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        newClientButton = new Button("Добавить клиента", VaadinIcon.PLUS.create());
-        newClientButton.addClickListener(e -> clientEditor.editClient(new Client(null, "", "", "", "", 0)));
-
-        loadClients();
-
         clientGrid.setHeight("300px");
         clientGrid.asSingleSelect().addValueChangeListener(e -> {
             clientEditor.editClient(e.getValue());
         });
-
-        HorizontalLayout addButtonLayout = new HorizontalLayout(newClientButton);
-        add(MainView.menuBar(), addButtonLayout, clientGrid, clientEditor);
+        loadClients();
 
         clientEditor.setChangeHandler(() -> {
             clientEditor.setVisible(false);
             loadClients();
         });
+
+        add(MainView.menuBar(), addButtonLayout, clientGrid, clientEditor);
     }
 
     private void loadClients() {

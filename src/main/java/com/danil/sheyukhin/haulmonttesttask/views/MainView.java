@@ -20,6 +20,8 @@ public class MainView extends VerticalLayout {
         menuBar.setOpenOnHover(true);
         menuBar.addItem("Список клиентов", e -> menuBar.getUI().ifPresent(ui -> ui.navigate("clients")));
         menuBar.addItem("Банки и доступные кредиты", e -> menuBar.getUI().ifPresent(ui -> ui.navigate("banks")));
+        menuBar.addItem("Действующие кредиты", e -> menuBar.getUI().ifPresent(ui -> ui.navigate("offers")));
+        menuBar.addItem("Рассчитать кредит", e -> menuBar.getUI().ifPresent(ui -> ui.navigate("payments")));
         return menuBar;
     }
 }

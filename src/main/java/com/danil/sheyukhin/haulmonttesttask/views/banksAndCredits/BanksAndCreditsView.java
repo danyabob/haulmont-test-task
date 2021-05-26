@@ -63,6 +63,7 @@ public class BanksAndCreditsView extends VerticalLayout {
         bankEditor.setChangeHandler(() -> {
             bankEditor.setVisible(false);
             loadBanks();
+            loadCredits();
         });
 
         VerticalLayout banksLayout = new VerticalLayout(addBankButtonLayout, bankGrid, bankEditor);
@@ -108,13 +109,13 @@ public class BanksAndCreditsView extends VerticalLayout {
     public void loadBanks() {
         bankGrid.setItems(bankDao.getAll());
         bankGrid.setColumns("name");
-        bankGrid.getColumnByKey("name").setHeader("Название");
+        bankGrid.getColumnByKey("name").setHeader("Название банка");
     }
 
     private void loadCredits() {
         creditGrid.setItems(creditDao.getAllByBankId(bankId));
         creditGrid.setColumns("name", "limit", "percentage");
-        creditGrid.getColumnByKey("name").setHeader("Название");
+        creditGrid.getColumnByKey("name").setHeader("Тип кредита");
         creditGrid.getColumnByKey("limit").setHeader("Лимит кредита, руб");
         creditGrid.getColumnByKey("percentage").setHeader("Процентная ставка, %");
     }

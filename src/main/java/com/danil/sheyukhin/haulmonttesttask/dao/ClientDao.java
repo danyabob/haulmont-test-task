@@ -32,13 +32,12 @@ public class ClientDao implements Dao<Client> {
                 client.getEmail(),
                 client.getPassport(),
                 client.getBankId());
-        client.setId(jdbcTemplate.queryForObject("SELECT ID FROM CLIENT WHERE NAME = ? AND PHONE = ? AND EMAIL = ? AND PASSPORT = ? AND BANK_ID = ?", Integer.class,
+        return jdbcTemplate.queryForObject("SELECT ID FROM CLIENT WHERE NAME = ? AND PHONE = ? AND EMAIL = ? AND PASSPORT = ? AND BANK_ID = ?", Integer.class,
                 client.getName(),
                 client.getPhone(),
                 client.getEmail(),
                 client.getPassport(),
-                client.getBankId()));
-        return client.getId();
+                client.getBankId());
     }
 
 //    @Override
