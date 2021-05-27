@@ -11,6 +11,7 @@ import com.danil.sheyukhin.haulmonttesttask.entities.Offer;
 import com.danil.sheyukhin.haulmonttesttask.views.MainView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.listbox.ListBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -22,6 +23,7 @@ import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Route("choose")
 @Theme(value = Lumo.class)
@@ -40,6 +42,9 @@ public class ChooseView extends VerticalLayout {
     private ListBox<Client> clientListBox = new ListBox<>();
     private ListBox<Bank> bankListBox = new ListBox<>();
     private ListBox<Credit> creditListBox = new ListBox<>();
+    private ComboBox<Client> clientComboBox = new ComboBox<>();
+    private ComboBox<Bank> bankComboBox = new ComboBox<>();
+    private ComboBox<Credit> creditComboBox = new ComboBox<>();
     private IntegerField limit = new IntegerField("Укажите сумму кредита, руб");
     private IntegerField duration = new IntegerField("Укажите срок кредита, мес");
     private Button calcButton = new Button("Рассчитать");
@@ -55,37 +60,35 @@ public class ChooseView extends VerticalLayout {
         this.offerDao = offerDao;
 
         H6 clientLabel = new H6("Выберите клиента:");
-        clients = clientDao.getAll();
-        clientListBox.setItems(clients);
-        clientListBox.addValueChangeListener(e -> {
+        clientComboBox.setDataProvider(this::fetchClient, this::fetchCountClient);
+        clientComboBox.setWidthFull();
+        clientComboBox.addValueChangeListener(e -> {
             client = e.getValue();
             clientIsChoosed = true;
             calcButtonEnableListener();
         });
-        VerticalLayout clientLayout = new VerticalLayout(clientLabel, clientListBox);
+        VerticalLayout clientLayout = new VerticalLayout(clientLabel, clientComboBox);
         clientLayout.setPadding(false);
         clientLayout.setMargin(false);
 
         H6 bankLabel = new H6("Выберите банк:");
-        banks = bankDao.getAll();
-        bankListBox.setItems(banks);
-        bankListBox.addValueChangeListener(event -> {
-                bank = event.getValue();
-                credits = creditDao.getAllByBankId(bank.getId());
-                creditListBox.setItems(credits);
-                creditListBox.setVisible(true);
-                bankIsChoosed = true;
-                creditIsChoosed = false;
-                calcButtonEnableListener();
+        bankComboBox.setDataProvider(this::fetchBank, this::fetchCountBank);
+        bankComboBox.addValueChangeListener(event -> {
+            bank = event.getValue();
+            creditComboBox.setDataProvider(this::fetchCredit, this::fetchCountCredit);
+            creditComboBox.setVisible(true);
+            bankIsChoosed = true;
+            creditIsChoosed = false;
+            calcButtonEnableListener();
         });
-        VerticalLayout bankLayout = new VerticalLayout(bankLabel, bankListBox);
+        VerticalLayout bankLayout = new VerticalLayout(bankLabel, bankComboBox);
         bankLayout.setSizeFull();
         bankLayout.setPadding(false);
         bankLayout.setMargin(false);
 
         H6 creditLabel = new H6("Выберите доступный кредит:");
-        creditListBox.setVisible(false);
-        creditListBox.addValueChangeListener(e -> {
+        creditComboBox.setVisible(false);
+        creditComboBox.addValueChangeListener(e -> {
             if (e.getValue() != null) {
                 credit = e.getValue();
                 creditIsChoosed = true;
@@ -94,7 +97,7 @@ public class ChooseView extends VerticalLayout {
                 limit.setValue(credit.getLimit());
             }
         });
-        VerticalLayout creditLayout = new VerticalLayout(creditLabel, creditListBox);
+        VerticalLayout creditLayout = new VerticalLayout(creditLabel, creditComboBox);
         creditLayout.setSizeFull();
         creditLayout.setPadding(false);
         creditLayout.setMargin(false);
@@ -130,6 +133,8 @@ public class ChooseView extends VerticalLayout {
         mainLayout.setPadding(false);
         mainLayout.setMargin(false);
 
+
+
         add(MainView.menuBar(), mainLayout);
     }
 
@@ -139,6 +144,54 @@ public class ChooseView extends VerticalLayout {
         } else {
             calcButton.setEnabled(false);
         }
+    }
+
+    public Stream<Client> fetchClient(String filter, int offset, int limit) {
+        return clientDao.getAll().stream()
+                .filter(client -> filter == null ||
+                        client.getName().toLowerCase().startsWith(filter.toLowerCase()) ||
+                        client.getPhone().toLowerCase().startsWith(filter.toLowerCase()) ||
+                        client.getEmail().toLowerCase().startsWith(filter.toLowerCase()) ||
+                        client.getPassport().toLowerCase().startsWith(filter.toLowerCase()))
+                .skip(offset).limit(limit);
+    }
+
+    public int fetchCountClient(String filter) {
+        return (int) clientDao.getAll().stream()
+                .filter(client -> filter == null ||
+                        client.getName().toLowerCase().startsWith(filter.toLowerCase()) ||
+                        client.getPhone().toLowerCase().startsWith(filter.toLowerCase()) ||
+                        client.getEmail().toLowerCase().startsWith(filter.toLowerCase()) ||
+                        client.getPassport().toLowerCase().startsWith(filter.toLowerCase()))
+                .count();
+    }
+
+    public Stream<Bank> fetchBank(String filter, int offset, int limit) {
+        return bankDao.getAll().stream()
+                .filter(bank -> filter == null ||
+                        bank.getName().toLowerCase().startsWith(filter.toLowerCase()))
+                .skip(offset).limit(limit);
+    }
+
+    public int fetchCountBank(String filter) {
+        return (int) bankDao.getAll().stream()
+                .filter(bank -> filter == null ||
+                        bank.getName().toLowerCase().startsWith(filter.toLowerCase()))
+                .count();
+    }
+
+    public Stream<Credit> fetchCredit(String filter, int offset, int limit) {
+        return creditDao.getAllByBankId(bank.getId()).stream()
+                .filter(credit -> filter == null ||
+                        credit.getName().toLowerCase().startsWith(filter.toLowerCase()))
+                .skip(offset).limit(limit);
+    }
+
+    public int fetchCountCredit(String filter) {
+        return (int) creditDao.getAllByBankId(bank.getId()).stream()
+                .filter(credit -> filter == null ||
+                        credit.getName().toLowerCase().startsWith(filter.toLowerCase()))
+                .count();
     }
 
 }
