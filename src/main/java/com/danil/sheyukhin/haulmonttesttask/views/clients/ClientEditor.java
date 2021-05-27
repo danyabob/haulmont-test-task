@@ -6,7 +6,7 @@
 
 package com.danil.sheyukhin.haulmonttesttask.views.clients;
 
-import com.danil.sheyukhin.haulmonttesttask.dao.ClientDao;
+import com.danil.sheyukhin.haulmonttesttask.dao.Dao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Client;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyNotifier;
@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SpringComponent
 @UIScope
 public class ClientEditor extends VerticalLayout implements KeyNotifier {
-    private ClientDao clientDao;
+    private Dao<Client> clientDao;
     private Client client;
 
     TextField name = new TextField("ФИО");
@@ -41,7 +41,7 @@ public class ClientEditor extends VerticalLayout implements KeyNotifier {
     private ChangeHandler changeHandler;
 
     @Autowired
-    public ClientEditor(ClientDao clientDao) {
+    public ClientEditor(Dao<Client> clientDao) {
         this.clientDao = clientDao;
 
         name.setWidthFull();

@@ -6,7 +6,7 @@
 
 package com.danil.sheyukhin.haulmonttesttask.views.clients;
 
-import com.danil.sheyukhin.haulmonttesttask.dao.ClientDao;
+import com.danil.sheyukhin.haulmonttesttask.dao.Dao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Client;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -28,13 +28,13 @@ import java.util.stream.Stream;
 @PageTitle("Список клиентов")
 @Theme(value = Lumo.class)
 public class ClientsView extends VerticalLayout {
-    private ClientDao clientDao;
+    private Dao<Client> clientDao;
     private ClientEditor clientEditor;
     private Grid<Client> clientGrid;
     private Button newClientButton;
     private TextField filterTextField;
 
-    public ClientsView(ClientDao clientDao, ClientEditor clientEditor) {
+    public ClientsView(Dao<Client> clientDao, ClientEditor clientEditor) {
         this.clientDao = clientDao;
         this.clientEditor = clientEditor;
 

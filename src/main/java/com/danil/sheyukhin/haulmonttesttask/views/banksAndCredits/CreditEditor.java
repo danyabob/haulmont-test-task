@@ -6,10 +6,8 @@
 
 package com.danil.sheyukhin.haulmonttesttask.views.banksAndCredits;
 
-import com.danil.sheyukhin.haulmonttesttask.dao.CreditDao;
-import com.danil.sheyukhin.haulmonttesttask.entities.Client;
+import com.danil.sheyukhin.haulmonttesttask.dao.Dao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Credit;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyNotifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -20,14 +18,12 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import com.vaadin.flow.theme.Theme;
-import com.vaadin.flow.theme.lumo.Lumo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringComponent
 @UIScope
 public class CreditEditor extends VerticalLayout implements KeyNotifier {
-    private CreditDao creditDao;
+    private Dao<Credit> creditDao;
     private Credit credit;
     private ChangeHandler changeHandler;
 
@@ -44,7 +40,7 @@ public class CreditEditor extends VerticalLayout implements KeyNotifier {
     private Binder<Credit> binder = new Binder<>(Credit.class);
 
     @Autowired
-    public CreditEditor(CreditDao creditDao) {
+    public CreditEditor(Dao<Credit> creditDao) {
         this.creditDao = creditDao;
 
         name.setMaxLength(32);

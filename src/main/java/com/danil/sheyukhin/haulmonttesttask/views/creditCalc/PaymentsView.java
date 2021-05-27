@@ -6,10 +6,7 @@
 
 package com.danil.sheyukhin.haulmonttesttask.views.creditCalc;
 
-import com.danil.sheyukhin.haulmonttesttask.dao.BankDao;
-import com.danil.sheyukhin.haulmonttesttask.dao.ClientDao;
-import com.danil.sheyukhin.haulmonttesttask.dao.CreditDao;
-import com.danil.sheyukhin.haulmonttesttask.dao.OfferDao;
+import com.danil.sheyukhin.haulmonttesttask.dao.Dao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Bank;
 import com.danil.sheyukhin.haulmonttesttask.entities.Client;
 import com.danil.sheyukhin.haulmonttesttask.entities.Credit;
@@ -35,13 +32,13 @@ import java.util.List;
 @PageTitle("График платежей")
 @Theme(value = Lumo.class)
 public class PaymentsView extends VerticalLayout {
-    private ClientDao clientDao;
+    private Dao<Client> clientDao;
     private Client client;
-    private BankDao bankDao;
+    private Dao<Bank> bankDao;
     private Bank bank;
-    private CreditDao creditDao;
+    private Dao<Credit> creditDao;
     private Credit credit;
-    private OfferDao offerDao;
+    private Dao<Offer> offerDao;
     private Offer offer;
     private H6 clientName;
     private H6 creditSum;
@@ -55,7 +52,7 @@ public class PaymentsView extends VerticalLayout {
     private static Offer tempOffer;
     private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
-    public PaymentsView(ClientDao clientDao, BankDao bankDao, CreditDao creditDao, OfferDao offerDao) {
+    public PaymentsView(Dao<Client> clientDao, Dao<Bank> bankDao, Dao<Credit> creditDao, Dao<Offer> offerDao) {
         this.clientDao = clientDao;
         this.bankDao = bankDao;
         this.creditDao = creditDao;

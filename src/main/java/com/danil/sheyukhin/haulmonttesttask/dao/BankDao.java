@@ -21,8 +21,6 @@ public class BankDao implements Dao<Bank> {
 
     private JdbcTemplate jdbcTemplate;
     private BankRowMapper bankRowMapper;
-    private ClientDao clientDao;
-    private CreditDao creditDao;
 
     BankDao(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
@@ -62,8 +60,6 @@ public class BankDao implements Dao<Bank> {
     class BankRowMapper implements RowMapper<Bank> {
         @Override
         public Bank mapRow(ResultSet resultSet, int i) throws SQLException {
-            clientDao = new ClientDao(jdbcTemplate.getDataSource());
-            creditDao = new CreditDao(jdbcTemplate.getDataSource());
             return new Bank(resultSet.getInt("ID"),
                     resultSet.getString("NAME"));
         }

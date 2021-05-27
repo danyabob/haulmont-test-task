@@ -6,7 +6,7 @@
 
 package com.danil.sheyukhin.haulmonttesttask.views.banksAndCredits;
 
-import com.danil.sheyukhin.haulmonttesttask.dao.BankDao;
+import com.danil.sheyukhin.haulmonttesttask.dao.Dao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Bank;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyNotifier;
@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SpringComponent
 @UIScope
 public class BankEditor extends VerticalLayout implements KeyNotifier {
-    private BankDao bankDao;
+    private Dao<Bank> bankDao;
     private Bank bank;
 
     TextField name = new TextField("Название банка");
@@ -37,7 +37,7 @@ public class BankEditor extends VerticalLayout implements KeyNotifier {
     private ChangeHandler changeHandler;
 
     @Autowired
-    public BankEditor(BankDao bankDao) {
+    public BankEditor(Dao<Bank> bankDao) {
         this.bankDao = bankDao;
 
         name.setMaxLength(32);

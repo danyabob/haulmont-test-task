@@ -6,8 +6,7 @@
 
 package com.danil.sheyukhin.haulmonttesttask.views.banksAndCredits;
 
-import com.danil.sheyukhin.haulmonttesttask.dao.BankDao;
-import com.danil.sheyukhin.haulmonttesttask.dao.CreditDao;
+import com.danil.sheyukhin.haulmonttesttask.dao.Dao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Bank;
 import com.danil.sheyukhin.haulmonttesttask.entities.Credit;
 import com.danil.sheyukhin.haulmonttesttask.views.clients.ClientsView;
@@ -24,14 +23,16 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 @Route("banks")
 @PageTitle("Банки и доступные кредиты")
 @Theme(value = Lumo.class)
 public class BanksAndCreditsView extends VerticalLayout {
-    private BankDao bankDao;
-    private CreditDao creditDao;
+    private Dao<Bank> bankDao;
+    private Dao<Credit> creditDao;
     private BankEditor bankEditor;
     private CreditEditor creditEditor;
     private Grid<Bank> bankGrid;
@@ -43,7 +44,7 @@ public class BanksAndCreditsView extends VerticalLayout {
     private TextField creditFilterTextField;
     private Integer bankId = null;
 
-    public BanksAndCreditsView(BankDao bankDao, CreditDao creditDao, BankEditor bankEditor, CreditEditor creditEditor) {
+    public BanksAndCreditsView(Dao<Bank> bankDao, Dao<Credit> creditDao, BankEditor bankEditor, CreditEditor creditEditor) {
         this.bankDao = bankDao;
         this.creditDao = creditDao;
         this.bankEditor = bankEditor;
@@ -144,8 +145,19 @@ public class BanksAndCreditsView extends VerticalLayout {
         bankGrid.getColumnByKey("name").setHeader("Название банка");
     }
 
+    private List<Credit> creditsByBankId() {
+        List<Credit> creditsByBankId = new ArrayList<>();
+        List<Credit> credits = creditDao.getAll();
+        for (Credit credit : credits) {
+            if (credit.getBankId() == bankId) {
+                creditsByBankId.add(credit);
+            }
+        }
+        return creditsByBankId;
+    }
+
     private void loadCredits() {
-        creditGrid.setItems(creditDao.getAllByBankId(bankId));
+        creditGrid.setItems(creditsByBankId());
         creditGrid.setColumns("name", "limit", "percentage");
         creditGrid.getColumnByKey("name").setHeader("Тип кредита");
         creditGrid.getColumnByKey("limit").setHeader("Лимит кредита, руб");
@@ -159,7 +171,7 @@ public class BanksAndCreditsView extends VerticalLayout {
     }
 
     public Stream<Credit> fetchCredit(String filter) {
-        return creditDao.getAllByBankId(bankId).stream()
+        return creditsByBankId().stream()
                 .filter(credit -> filter == null ||
                         credit.getName().toLowerCase().startsWith(filter.toLowerCase()));
     }

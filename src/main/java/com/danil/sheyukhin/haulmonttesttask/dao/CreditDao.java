@@ -21,7 +21,6 @@ public class CreditDao implements Dao<Credit> {
 
     private JdbcTemplate jdbcTemplate;
     private CreditRowMapper creditRowMapper;
-    private BankDao bankDao;
 
     CreditDao(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
@@ -50,11 +49,6 @@ public class CreditDao implements Dao<Credit> {
     @Override
     public List<Credit> getAll() {
         return jdbcTemplate.query("SELECT * FROM CREDIT", creditRowMapper);
-    }
-
-    public List<Credit> getAllByBankId(Integer bankId) {
-        return jdbcTemplate.query("SELECT * FROM CREDIT WHERE BANK_ID = ?",
-                creditRowMapper, bankId);
     }
 
     @Override

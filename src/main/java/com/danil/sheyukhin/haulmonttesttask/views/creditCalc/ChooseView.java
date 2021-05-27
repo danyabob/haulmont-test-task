@@ -6,10 +6,7 @@
 
 package com.danil.sheyukhin.haulmonttesttask.views.creditCalc;
 
-import com.danil.sheyukhin.haulmonttesttask.dao.BankDao;
-import com.danil.sheyukhin.haulmonttesttask.dao.ClientDao;
-import com.danil.sheyukhin.haulmonttesttask.dao.CreditDao;
-import com.danil.sheyukhin.haulmonttesttask.dao.OfferDao;
+import com.danil.sheyukhin.haulmonttesttask.dao.Dao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Bank;
 import com.danil.sheyukhin.haulmonttesttask.entities.Client;
 import com.danil.sheyukhin.haulmonttesttask.entities.Credit;
@@ -28,19 +25,21 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 @Route("choose")
 @PageTitle("Рассчитать кредит")
 @Theme(value = Lumo.class)
 public class ChooseView extends VerticalLayout {
-    private ClientDao clientDao;
+    private Dao<Client> clientDao;
     private Client client;
-    private BankDao bankDao;
+    private Dao<Bank> bankDao;
     private Bank bank;
-    private CreditDao creditDao;
+    private Dao<Credit> creditDao;
     private Credit credit;
-    private OfferDao offerDao;
+    private Dao<Offer> offerDao;
     private Offer offer;
     private ComboBox<Client> clientComboBox = new ComboBox<>();
     private ComboBox<Bank> bankComboBox = new ComboBox<>();
@@ -52,7 +51,7 @@ public class ChooseView extends VerticalLayout {
     private boolean bankIsChoosed = false;
     private boolean creditIsChoosed = false;
 
-    public ChooseView(ClientDao clientDao, BankDao bankDao, CreditDao creditDao, OfferDao offerDao) {
+    public ChooseView(Dao<Client> clientDao, Dao<Bank> bankDao, Dao<Credit> creditDao, Dao<Offer> offerDao) {
         this.clientDao = clientDao;
         this.bankDao = bankDao;
         this.creditDao = creditDao;
@@ -147,6 +146,17 @@ public class ChooseView extends VerticalLayout {
         add(ClientsView.menuBar(), mainLayout);
     }
 
+    private List<Credit> creditsByBankId() {
+        List<Credit> creditsByBankId = new ArrayList<>();
+        List<Credit> credits = creditDao.getAll();
+        for (Credit credit : credits) {
+            if (credit.getBankId() == bank.getId()) {
+                creditsByBankId.add(credit);
+            }
+        }
+        return creditsByBankId;
+    }
+
     private void calcButtonEnableListener() {
         if (clientIsChoosed && bankIsChoosed && creditIsChoosed) {
             calcButton.setEnabled(true);
@@ -190,14 +200,14 @@ public class ChooseView extends VerticalLayout {
     }
 
     public Stream<Credit> fetchCredit(String filter, int offset, int limit) {
-        return creditDao.getAllByBankId(bank.getId()).stream()
+        return creditsByBankId().stream()
                 .filter(credit -> filter == null ||
                         credit.getName().toLowerCase().startsWith(filter.toLowerCase()))
                 .skip(offset).limit(limit);
     }
 
     public int fetchCountCredit(String filter) {
-        return (int) creditDao.getAllByBankId(bank.getId()).stream()
+        return (int) creditsByBankId().stream()
                 .filter(credit -> filter == null ||
                         credit.getName().toLowerCase().startsWith(filter.toLowerCase()))
                 .count();
