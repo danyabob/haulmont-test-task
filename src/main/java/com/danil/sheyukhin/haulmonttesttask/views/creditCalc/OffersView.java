@@ -12,6 +12,7 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Route("offers")
+@PageTitle("Действующие кредиты")
 @Theme(value = Lumo.class)
 public class OffersView extends VerticalLayout {
     private ClientDao clientDao;

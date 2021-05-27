@@ -17,6 +17,7 @@ import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
@@ -25,6 +26,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 @Route("payments")
+@PageTitle("График платежей")
 @Theme(value = Lumo.class)
 public class PaymentsView extends VerticalLayout {
     private ClientDao clientDao;

@@ -17,6 +17,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
@@ -24,6 +25,7 @@ import com.vaadin.flow.theme.lumo.Lumo;
 import java.util.stream.Stream;
 
 @Route("choose")
+@PageTitle("Рассчитать кредит")
 @Theme(value = Lumo.class)
 public class ChooseView extends VerticalLayout {
     private ClientDao clientDao;
