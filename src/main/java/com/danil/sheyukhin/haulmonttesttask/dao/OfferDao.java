@@ -28,6 +28,9 @@ public class OfferDao implements Dao<Offer> {
 
     @Override
     public int create(Offer offer) {
+        if (offer == null) {
+            throw new RuntimeException();
+        }
         jdbcTemplate.update("INSERT INTO OFFER(CLIENT_ID, CREDIT_ID, SUMMA, DURATION) VALUES (?, ?, ?, ?)",
                 offer.getClientId(),
                 offer.getCreditId(),
@@ -42,6 +45,9 @@ public class OfferDao implements Dao<Offer> {
 
     @Override
     public Offer getById(Integer id) {
+        if (id == null) {
+            throw new RuntimeException();
+        }
         return jdbcTemplate.queryForObject("SELECT * FROM OFFER WHERE ID = ?", offerRowMapper, id);
     }
 
@@ -52,6 +58,9 @@ public class OfferDao implements Dao<Offer> {
 
     @Override
     public void update(Offer offer) {
+        if (offer == null) {
+            throw new RuntimeException();
+        }
         jdbcTemplate.update("UPDATE OFFER SET CLIENT_ID = ?, CREDIT_ID = ?, SUMMA = ?, DURATION = ? WHERE ID = ?",
                 offer.getClientId(),
                 offer.getCreditId(),
@@ -62,6 +71,9 @@ public class OfferDao implements Dao<Offer> {
 
     @Override
     public void delete(Integer id) {
+        if (id == null) {
+            throw new RuntimeException();
+        }
         jdbcTemplate.update("DELETE FROM OFFER WHERE ID = ?", id);
     }
 

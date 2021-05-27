@@ -29,6 +29,9 @@ public class CreditDao implements Dao<Credit> {
 
     @Override
     public int create(Credit credit) {
+        if (credit == null) {
+            throw new RuntimeException();
+        }
         jdbcTemplate.update("INSERT INTO CREDIT(BANK_ID, NAME, LIMIT, PERCENTAGE) VALUES (?, ?, ?, ?)",
                 credit.getBankId(),
                 credit.getName(),
@@ -43,6 +46,9 @@ public class CreditDao implements Dao<Credit> {
 
     @Override
     public Credit getById(Integer id) {
+        if (id == null) {
+            throw new RuntimeException();
+        }
         return jdbcTemplate.queryForObject("SELECT * FROM CREDIT WHERE ID = ?", creditRowMapper, id);
     }
 
@@ -53,6 +59,9 @@ public class CreditDao implements Dao<Credit> {
 
     @Override
     public void update(Credit credit) {
+        if (credit == null) {
+            throw new RuntimeException();
+        }
         jdbcTemplate.update("UPDATE CREDIT SET BANK_ID = ?, NAME = ?, LIMIT = ?, PERCENTAGE = ? WHERE ID = ?",
                 credit.getBankId(),
                 credit.getName(),
@@ -63,6 +72,9 @@ public class CreditDao implements Dao<Credit> {
 
     @Override
     public void delete(Integer id) {
+        if (id == null) {
+            throw new RuntimeException();
+        }
         jdbcTemplate.update("DELETE FROM CREDIT WHERE ID = ?", id);
     }
 

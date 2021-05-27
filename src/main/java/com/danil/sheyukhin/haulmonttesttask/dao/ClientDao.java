@@ -29,6 +29,9 @@ public class ClientDao implements Dao<Client> {
 
     @Override
     public int create(Client client) {
+        if (client == null) {
+            throw new RuntimeException();
+        }
         jdbcTemplate.update("INSERT INTO CLIENT(NAME, PHONE, EMAIL, PASSPORT, BANK_ID) VALUES (?, ?, ?, ?, ?)",
                 client.getName(),
                 client.getPhone(),
@@ -60,6 +63,9 @@ public class ClientDao implements Dao<Client> {
 
     @Override
     public Client getById(Integer id) {
+        if (id == null) {
+            throw new RuntimeException();
+        }
         return jdbcTemplate.queryForObject("SELECT * FROM CLIENT WHERE ID = ?", clientRowMapper, id);
     }
 
@@ -70,6 +76,9 @@ public class ClientDao implements Dao<Client> {
 
     @Override
     public void update(Client client) {
+        if (client == null) {
+            throw new RuntimeException();
+        }
         jdbcTemplate.update("UPDATE CLIENT SET NAME = ?, PHONE = ?, EMAIL = ?, PASSPORT = ?, BANK_ID = ? WHERE ID = ?",
                 client.getName(),
                 client.getPhone(),
@@ -81,6 +90,9 @@ public class ClientDao implements Dao<Client> {
 
     @Override
     public void delete(Integer id) {
+        if (id == null) {
+            throw new RuntimeException();
+        }
         jdbcTemplate.update("DELETE FROM CLIENT WHERE ID = ?", id);
     }
 

@@ -40,6 +40,9 @@ public class BankDao implements Dao<Bank> {
 
     @Override
     public Bank getById(Integer id) {
+        if (id == null) {
+            throw new RuntimeException();
+        }
         return jdbcTemplate.queryForObject("SELECT * FROM BANK WHERE ID = ?", bankRowMapper, id);
     }
 
@@ -50,6 +53,9 @@ public class BankDao implements Dao<Bank> {
 
     @Override
     public void update(Bank bank) {
+        if (bank == null) {
+            throw new RuntimeException();
+        }
         jdbcTemplate.update("UPDATE BANK SET NAME = ? WHERE ID = ?",
                 bank.getName(),
                 bank.getId());
@@ -57,6 +63,9 @@ public class BankDao implements Dao<Bank> {
 
     @Override
     public void delete(Integer id) {
+        if (id == null) {
+            throw new RuntimeException();
+        }
         jdbcTemplate.update("DELETE FROM BANK WHERE ID = ?", id);
     }
 
