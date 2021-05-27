@@ -13,6 +13,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
@@ -38,7 +39,7 @@ public class ChooseView extends VerticalLayout {
     private ComboBox<Credit> creditComboBox = new ComboBox<>();
     private IntegerField limit = new IntegerField("Укажите сумму кредита, руб");
     private IntegerField duration = new IntegerField("Укажите срок кредита, мес");
-    private Button calcButton = new Button("Рассчитать");
+    private Button calcButton = new Button("Рассчитать", VaadinIcon.CALC.create());
     private boolean clientIsChoosed = false;
     private boolean bankIsChoosed = false;
     private boolean creditIsChoosed = false;
@@ -110,6 +111,7 @@ public class ChooseView extends VerticalLayout {
         duration.setErrorMessage("1 - 360 мес");
 
         calcButton.setEnabled(false);
+        calcButton.getElement().getThemeList().add("primary");
         calcButton.addClickListener(e -> {
             if (limit.getValue() > 0 && limit.getValue() <= limit.getMax() && duration.getValue() > 0 && duration.getValue() <= duration.getMax()) {
                 Integer offerId = offerDao.create(new Offer(null, client.getId(), credit.getId(), limit.getValue(), duration.getValue()));
@@ -120,7 +122,11 @@ public class ChooseView extends VerticalLayout {
             }
         });
 
-        VerticalLayout rightVerticalLayout = new VerticalLayout(limit, duration, calcButton);
+        HorizontalLayout calcButtonLayout = new HorizontalLayout(calcButton);
+        calcButtonLayout.setJustifyContentMode(JustifyContentMode.CENTER);
+        calcButtonLayout.setWidthFull();
+
+        VerticalLayout rightVerticalLayout = new VerticalLayout(limit, duration, calcButtonLayout);
         rightVerticalLayout.setWidth("40%");
 
         HorizontalLayout mainLayout = new HorizontalLayout(leftVerticalLayout, rightVerticalLayout);

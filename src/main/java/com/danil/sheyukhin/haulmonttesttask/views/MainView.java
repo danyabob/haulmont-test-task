@@ -1,6 +1,11 @@
 package com.danil.sheyukhin.haulmonttesttask.views;
 
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.contextmenu.MenuItem;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
@@ -14,13 +19,20 @@ public class MainView extends VerticalLayout {
         add(menuBar());
     }
 
-    public static MenuBar menuBar() {
-        MenuBar menuBar = new MenuBar();
-        menuBar.setOpenOnHover(true);
-        menuBar.addItem("Список клиентов", e -> menuBar.getUI().ifPresent(ui -> ui.navigate("clients")));
-        menuBar.addItem("Банки и доступные кредиты", e -> menuBar.getUI().ifPresent(ui -> ui.navigate("banks")));
-        menuBar.addItem("Действующие кредиты", e -> menuBar.getUI().ifPresent(ui -> ui.navigate("offers")));
-        menuBar.addItem("Рассчитать кредит", e -> menuBar.getUI().ifPresent(ui -> ui.navigate("choose")));
-        return menuBar;
+    public static HorizontalLayout menuBar() {
+
+        Button clientButton = new Button("Список клиентов", VaadinIcon.USER.create());
+        clientButton.addClickListener(e -> UI.getCurrent().navigate("clients"));
+        Button bankButton = new Button("Банки и доступные кредиты", VaadinIcon.BOOK_PERCENT.create());
+        bankButton.addClickListener(e -> UI.getCurrent().navigate("banks"));
+        Button offerButton = new Button("Действующие кредиты", VaadinIcon.MONEY.create());
+        offerButton.addClickListener(e -> UI.getCurrent().navigate("offers"));
+        Button calcButton = new Button("Рассчитать кредит", VaadinIcon.CALC.create());
+        calcButton.addClickListener(e -> UI.getCurrent().navigate("choose"));
+        calcButton.getElement().getStyle().set("margin-left", "auto");
+
+        HorizontalLayout horizontalLayout = new HorizontalLayout(clientButton, bankButton, offerButton, calcButton);
+        horizontalLayout.setWidthFull();
+        return horizontalLayout;
     }
 }

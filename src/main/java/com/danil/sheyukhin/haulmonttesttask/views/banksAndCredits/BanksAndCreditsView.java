@@ -36,6 +36,7 @@ public class BanksAndCreditsView extends VerticalLayout {
         this.creditEditor = creditEditor;
 
         newBankButton = new Button("Добавить банк", VaadinIcon.PLUS.create());
+        newBankButton.getElement().getThemeList().add("primary");
         newBankButton.addClickListener(e -> bankEditor.editBank(new Bank(null, "")));
         editBankButton = new Button("Изменить банк", VaadinIcon.REFRESH.create());
         editBankButton.setEnabled(false);
@@ -72,10 +73,13 @@ public class BanksAndCreditsView extends VerticalLayout {
         banksLayout.setWidth("30%");
 
         newCreditButton = new Button("Добавить кредит", VaadinIcon.PLUS.create());
+        newCreditButton.getElement().getThemeList().add("primary");
         newCreditButton.setEnabled(false);
         newCreditButton.addClickListener(e -> creditEditor.editCredit(new Credit(null, bankId, "", 0, 0)));
 
         HorizontalLayout addCreditButtonLayout = new HorizontalLayout(newCreditButton);
+        addCreditButtonLayout.setJustifyContentMode(JustifyContentMode.CENTER);
+        addCreditButtonLayout.setWidthFull();
 
         creditGrid = new Grid<>(Credit.class);
         creditGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,

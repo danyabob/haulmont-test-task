@@ -9,10 +9,12 @@ import com.danil.sheyukhin.haulmonttesttask.entities.Client;
 import com.danil.sheyukhin.haulmonttesttask.entities.Credit;
 import com.danil.sheyukhin.haulmonttesttask.entities.Offer;
 import com.danil.sheyukhin.haulmonttesttask.views.MainView;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -39,6 +41,7 @@ public class PaymentsView extends VerticalLayout {
     private H6 fullPercentageSum;
     private H6 creditDuration;
     private H6 percentage;
+    private Button deleteOfferButton = new Button("Удалить кредитное предложение", VaadinIcon.TRASH.create());
     private Grid<Offer.Payment> paymentGrid;
     private List<Offer.Payment> payments;
     private static Offer tempOffer;
@@ -60,7 +63,15 @@ public class PaymentsView extends VerticalLayout {
         fullPercentageSum = new H6("Переплата: " + decimalFormat.format(getFullPercentageSum()) + " руб,");
         percentage = new H6("Процентная ставка: " + credit.getPercentage() + " %");
 
-        HorizontalLayout clientNameCreditSumCreditDuration = new HorizontalLayout(clientName, creditSum, creditDuration);
+        deleteOfferButton.getElement().getThemeList().add("error");
+        deleteOfferButton.getElement().getStyle().set("margin-left", "auto");
+        deleteOfferButton.addClickListener(e -> {
+            offerDao.delete(offer.getId());
+            UI.getCurrent().navigate("offers");
+        });
+
+        HorizontalLayout clientNameCreditSumCreditDuration = new HorizontalLayout(clientName, creditSum, creditDuration, deleteOfferButton);
+        clientNameCreditSumCreditDuration.setWidthFull();
         HorizontalLayout fullPaymentSumFullPercentageSumPercentage = new HorizontalLayout(fullPaymentSum, fullPercentageSum, percentage);
         VerticalLayout clientInfoLayout = new VerticalLayout(clientNameCreditSumCreditDuration, fullPaymentSumFullPercentageSumPercentage);
         clientInfoLayout.setMargin(false);
