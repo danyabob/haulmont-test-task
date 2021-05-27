@@ -40,10 +40,12 @@ public class CreditEditor extends VerticalLayout implements KeyNotifier {
         this.creditDao = creditDao;
 
         name.setMaxLength(32);
-        limit.setMin(0);
+        limit.setMin(1);
         limit.setMax(10000000);
-        percentage.setMin(0);
+        limit.setErrorMessage("1 - 10000000");
+        percentage.setMin(1);
         percentage.setMax(100);
+        percentage.setErrorMessage("1 - 100");
 
         add(limitPercentageLayout, actions);
 

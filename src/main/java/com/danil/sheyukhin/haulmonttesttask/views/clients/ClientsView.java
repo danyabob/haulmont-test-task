@@ -2,7 +2,7 @@ package com.danil.sheyukhin.haulmonttesttask.views.clients;
 
 import com.danil.sheyukhin.haulmonttesttask.dao.ClientDao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Client;
-import com.danil.sheyukhin.haulmonttesttask.views.MainView;
+import com.danil.sheyukhin.haulmonttesttask.views.MainMenu;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -55,7 +55,7 @@ public class ClientsView extends VerticalLayout {
         });
 
         setHeightFull();
-        add(MainView.menuBar(), addButtonLayout, clientGrid, clientEditor);
+        add(MainMenu.menuBar(), addButtonLayout, clientGrid, clientEditor);
     }
 
     private void loadClients() {

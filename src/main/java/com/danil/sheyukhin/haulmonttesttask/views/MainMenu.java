@@ -13,9 +13,9 @@ import com.vaadin.flow.theme.lumo.Lumo;
 
 @Route
 @Theme(value = Lumo.class)
-public class MainView extends VerticalLayout {
+public class MainMenu extends VerticalLayout {
 
-    public MainView() {
+    public MainMenu() {
         add(menuBar());
     }
 
@@ -28,6 +28,7 @@ public class MainView extends VerticalLayout {
         Button offerButton = new Button("Действующие кредиты", VaadinIcon.MONEY.create());
         offerButton.addClickListener(e -> UI.getCurrent().navigate("offers"));
         Button calcButton = new Button("Рассчитать кредит", VaadinIcon.CALC.create());
+        calcButton.getElement().getThemeList().add("primary");
         calcButton.addClickListener(e -> UI.getCurrent().navigate("choose"));
         calcButton.getElement().getStyle().set("margin-left", "auto");
 

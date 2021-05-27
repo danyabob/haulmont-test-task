@@ -5,16 +5,19 @@ import com.danil.sheyukhin.haulmonttesttask.dao.ClientDao;
 import com.danil.sheyukhin.haulmonttesttask.dao.CreditDao;
 import com.danil.sheyukhin.haulmonttesttask.dao.OfferDao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Offer;
-import com.danil.sheyukhin.haulmonttesttask.views.MainView;
+import com.danil.sheyukhin.haulmonttesttask.views.MainMenu;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Route("offers")
 @Theme(value = Lumo.class)
@@ -25,12 +28,18 @@ public class OffersView extends VerticalLayout {
     private OfferDao offerDao;
     private List<Offer> offers;
     private Grid<Offer> offerGrid;
+    private TextField offerFilterTextField;
 
     public OffersView(ClientDao clientDao, BankDao bankDao, CreditDao creditDao, OfferDao offerDao) {
         this.clientDao = clientDao;
         this.bankDao = bankDao;
         this.creditDao = creditDao;
         this.offerDao = offerDao;
+
+        offerFilterTextField = new TextField();
+        offerFilterTextField.setPlaceholder("Быстрый поиск");
+        offerFilterTextField.setValueChangeMode(ValueChangeMode.EAGER);
+        offerFilterTextField.addValueChangeListener(e -> offerGrid.setItems(fetchOffer(e.getValue())));
 
         offerGrid = new Grid<>(Offer.class);
         loadOffers();
@@ -41,7 +50,7 @@ public class OffersView extends VerticalLayout {
             UI.getCurrent().navigate("payments");
         });
 
-        add(MainView.menuBar(), offerGrid);
+        add(MainMenu.menuBar(), offerFilterTextField, offerGrid);
     }
 
     public void loadOffers() {
@@ -60,5 +69,13 @@ public class OffersView extends VerticalLayout {
         offerGrid.getColumnByKey("summa").setHeader("Сумма, руб");
         offerGrid.getColumnByKey("percentage").setHeader("Ставка, %");
         offerGrid.getColumnByKey("duration").setHeader("Срок, мес");
+    }
+
+    public Stream<Offer> fetchOffer(String filter) {
+        return offers.stream()
+                .filter(offer -> filter == null ||
+                        offer.getClientName().toLowerCase().startsWith(filter.toLowerCase()) ||
+                        offer.getBankName().toLowerCase().startsWith(filter.toLowerCase()) ||
+                        offer.getCreditName().toLowerCase().startsWith(filter.toLowerCase()));
     }
 }

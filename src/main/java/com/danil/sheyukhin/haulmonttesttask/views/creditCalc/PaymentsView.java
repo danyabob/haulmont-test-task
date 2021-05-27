@@ -8,7 +8,7 @@ import com.danil.sheyukhin.haulmonttesttask.entities.Bank;
 import com.danil.sheyukhin.haulmonttesttask.entities.Client;
 import com.danil.sheyukhin.haulmonttesttask.entities.Credit;
 import com.danil.sheyukhin.haulmonttesttask.entities.Offer;
-import com.danil.sheyukhin.haulmonttesttask.views.MainView;
+import com.danil.sheyukhin.haulmonttesttask.views.MainMenu;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -82,7 +82,7 @@ public class PaymentsView extends VerticalLayout {
         paymentGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
 
-        add(MainView.menuBar(), clientInfoLayout, paymentGrid);
+        add(MainMenu.menuBar(), clientInfoLayout, paymentGrid);
     }
 
     private void loadPayments() {
