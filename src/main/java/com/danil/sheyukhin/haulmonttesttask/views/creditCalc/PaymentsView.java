@@ -54,37 +54,42 @@ public class PaymentsView extends VerticalLayout {
         this.bankDao = bankDao;
         this.creditDao = creditDao;
         this.offerDao = offerDao;
+
         offer = tempOffer();
-        credit = creditDao.getById(offer.getCreditId());
-        payments = offer.getPayments(credit.getPercentage());
+        if (offer != null) {
+            credit = creditDao.getById(offer.getCreditId());
+            payments = offer.getPayments(credit.getPercentage());
 
-        clientName = new H6("Заёмщик: " + offer.getClientName() + ",");
-        creditSum = new H6("Сумма кредита: " + offer.getSumma() + " руб,");
-        creditDuration = new H6("Срок кредита: " + offer.getDuration() + " мес");
-        fullPaymentSum = new H6("Сумма с процентами: " + decimalFormat.format(getFullPaymentSum()) + " руб,");
-        fullPercentageSum = new H6("Переплата: " + decimalFormat.format(getFullPercentageSum()) + " руб,");
-        percentage = new H6("Процентная ставка: " + credit.getPercentage() + " %");
+            clientName = new H6("Заёмщик: " + offer.getClientName() + ",");
+            creditSum = new H6("Сумма кредита: " + offer.getSumma() + " руб,");
+            creditDuration = new H6("Срок кредита: " + offer.getDuration() + " мес");
+            fullPaymentSum = new H6("Сумма с процентами: " + decimalFormat.format(getFullPaymentSum()) + " руб,");
+            fullPercentageSum = new H6("Переплата: " + decimalFormat.format(getFullPercentageSum()) + " руб,");
+            percentage = new H6("Процентная ставка: " + credit.getPercentage() + " %");
 
-        deleteOfferButton.getElement().getThemeList().add("error");
-        deleteOfferButton.getElement().getStyle().set("margin-left", "auto");
-        deleteOfferButton.addClickListener(e -> {
-            offerDao.delete(offer.getId());
-            UI.getCurrent().navigate("offers");
-        });
+            deleteOfferButton.getElement().getThemeList().add("error");
+            deleteOfferButton.getElement().getStyle().set("margin-left", "auto");
+            deleteOfferButton.addClickListener(e -> {
+                offerDao.delete(offer.getId());
+                UI.getCurrent().navigate("offers");
+            });
 
-        HorizontalLayout clientNameCreditSumCreditDuration = new HorizontalLayout(clientName, creditSum, creditDuration, deleteOfferButton);
-        clientNameCreditSumCreditDuration.setWidthFull();
-        HorizontalLayout fullPaymentSumFullPercentageSumPercentage = new HorizontalLayout(fullPaymentSum, fullPercentageSum, percentage);
-        VerticalLayout clientInfoLayout = new VerticalLayout(clientNameCreditSumCreditDuration, fullPaymentSumFullPercentageSumPercentage);
-        clientInfoLayout.setMargin(false);
-        clientInfoLayout.setPadding(false);
+            HorizontalLayout clientNameCreditSumCreditDuration = new HorizontalLayout(clientName, creditSum, creditDuration, deleteOfferButton);
+            clientNameCreditSumCreditDuration.setWidthFull();
+            HorizontalLayout fullPaymentSumFullPercentageSumPercentage = new HorizontalLayout(fullPaymentSum, fullPercentageSum, percentage);
+            VerticalLayout clientInfoLayout = new VerticalLayout(clientNameCreditSumCreditDuration, fullPaymentSumFullPercentageSumPercentage);
+            clientInfoLayout.setMargin(false);
+            clientInfoLayout.setPadding(false);
 
-        paymentGrid = new Grid<>(Offer.Payment.class);
-        loadPayments();
-        paymentGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
-                GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+            paymentGrid = new Grid<>(Offer.Payment.class);
+            loadPayments();
+            paymentGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
+                    GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
 
-        add(ClientsView.menuBar(), clientInfoLayout, paymentGrid);
+            add(ClientsView.menuBar(), clientInfoLayout, paymentGrid);
+        } else {
+            add(ClientsView.menuBar());
+        }
     }
 
     private void loadPayments() {
