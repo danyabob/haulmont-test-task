@@ -49,13 +49,13 @@ public class ClientsView extends VerticalLayout {
         HorizontalLayout addButtonLayout = new HorizontalLayout(newClientButton, filterTextField);
 
         clientGrid = new Grid<>(Client.class);
+        loadClients();
         clientGrid.setHeight("50%");
         clientGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         clientGrid.asSingleSelect().addValueChangeListener(e -> {
             clientEditor.editClient(e.getValue());
         });
-        loadClients();
 
         clientEditor.setChangeHandler(() -> {
             clientEditor.setVisible(false);
@@ -64,24 +64,6 @@ public class ClientsView extends VerticalLayout {
 
         setHeightFull();
         add(menuBar(), addButtonLayout, clientGrid, clientEditor);
-    }
-
-    private void loadClients() {
-        clientGrid.setItems(clientDao.getAll());
-        clientGrid.setColumns("name", "phone", "email", "passport");
-        clientGrid.getColumnByKey("name").setHeader("ФИО");
-        clientGrid.getColumnByKey("phone").setHeader("Телефон");
-        clientGrid.getColumnByKey("email").setHeader("e-mail");
-        clientGrid.getColumnByKey("passport").setHeader("Паспорт");
-    }
-
-    public Stream<Client> fetchClient(String filter) {
-        return clientDao.getAll().stream()
-                .filter(client -> filter == null ||
-                        client.getName().toLowerCase().startsWith(filter.toLowerCase()) ||
-                        client.getPhone().toLowerCase().startsWith(filter.toLowerCase()) ||
-                        client.getEmail().toLowerCase().startsWith(filter.toLowerCase()) ||
-                        client.getPassport().toLowerCase().startsWith(filter.toLowerCase()));
     }
 
     public static HorizontalLayout menuBar() {
@@ -98,5 +80,23 @@ public class ClientsView extends VerticalLayout {
         HorizontalLayout horizontalLayout = new HorizontalLayout(clientButton, bankButton, offerButton, calcButton);
         horizontalLayout.setWidthFull();
         return horizontalLayout;
+    }
+
+    private void loadClients() {
+        clientGrid.setItems(clientDao.getAll());
+        clientGrid.setColumns("name", "phone", "email", "passport");
+        clientGrid.getColumnByKey("name").setHeader("ФИО");
+        clientGrid.getColumnByKey("phone").setHeader("Телефон");
+        clientGrid.getColumnByKey("email").setHeader("e-mail");
+        clientGrid.getColumnByKey("passport").setHeader("Паспорт");
+    }
+
+    private Stream<Client> fetchClient(String filter) {
+        return clientDao.getAll().stream()
+                .filter(client -> filter == null ||
+                        client.getName().toLowerCase().startsWith(filter.toLowerCase()) ||
+                        client.getPhone().toLowerCase().startsWith(filter.toLowerCase()) ||
+                        client.getEmail().toLowerCase().startsWith(filter.toLowerCase()) ||
+                        client.getPassport().toLowerCase().startsWith(filter.toLowerCase()));
     }
 }

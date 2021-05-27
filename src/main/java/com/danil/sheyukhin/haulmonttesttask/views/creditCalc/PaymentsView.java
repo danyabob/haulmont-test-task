@@ -32,22 +32,26 @@ import java.util.List;
 @PageTitle("График платежей")
 @Theme(value = Lumo.class)
 public class PaymentsView extends VerticalLayout {
+    private static Offer tempOffer;
+
     private Dao<Client> clientDao;
     private Dao<Bank> bankDao;
     private Dao<Credit> creditDao;
-    private Credit credit;
     private Dao<Offer> offerDao;
+
+    private Credit credit;
     private Offer offer;
+
     private H6 clientName;
     private H6 creditSum;
     private H6 fullPaymentSum;
     private H6 fullPercentageSum;
     private H6 creditDuration;
     private H6 percentage;
-    private Button deleteOfferButton = new Button("Удалить кредитное предложение", VaadinIcon.TRASH.create());
+
+    private Button deleteOfferButton;
     private Grid<Offer.Payment> paymentGrid;
     private List<Offer.Payment> payments;
-    private static Offer tempOffer;
     private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     public PaymentsView(Dao<Client> clientDao, Dao<Bank> bankDao, Dao<Credit> creditDao, Dao<Offer> offerDao) {
@@ -68,6 +72,7 @@ public class PaymentsView extends VerticalLayout {
             fullPercentageSum = new H6("Переплата: " + decimalFormat.format(getFullPercentageSum()) + " руб,");
             percentage = new H6("Процентная ставка: " + credit.getPercentage() + " %");
 
+            deleteOfferButton = new Button("Удалить кредитное предложение", VaadinIcon.TRASH.create());
             deleteOfferButton.getElement().getThemeList().add("error");
             deleteOfferButton.getElement().getStyle().set("margin-left", "auto");
             deleteOfferButton.addClickListener(e -> {
@@ -78,7 +83,9 @@ public class PaymentsView extends VerticalLayout {
 
             HorizontalLayout clientNameCreditSumCreditDuration = new HorizontalLayout(clientName, creditSum, creditDuration, deleteOfferButton);
             clientNameCreditSumCreditDuration.setWidthFull();
+
             HorizontalLayout fullPaymentSumFullPercentageSumPercentage = new HorizontalLayout(fullPaymentSum, fullPercentageSum, percentage);
+
             VerticalLayout clientInfoLayout = new VerticalLayout(clientNameCreditSumCreditDuration, fullPaymentSumFullPercentageSumPercentage);
             clientInfoLayout.setMargin(false);
             clientInfoLayout.setPadding(false);
@@ -92,6 +99,10 @@ public class PaymentsView extends VerticalLayout {
         } else {
             add(ClientsView.menuBar());
         }
+    }
+
+    public static void setTempOffer(Offer tempOffer) {
+        PaymentsView.tempOffer = tempOffer;
     }
 
     private void loadPayments() {
@@ -113,9 +124,5 @@ public class PaymentsView extends VerticalLayout {
 
     private double getFullPaymentSum() {
         return offer.getSumma() + getFullPercentageSum();
-    }
-
-    public static void setTempOffer(Offer tempOffer) {
-        PaymentsView.tempOffer = tempOffer;
     }
 }

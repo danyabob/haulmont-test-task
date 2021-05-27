@@ -61,7 +61,7 @@ public class OffersView extends VerticalLayout {
         add(ClientsView.menuBar(), offerFilterTextField, offerGrid);
     }
 
-    public void loadOffers() {
+    private void loadOffers() {
         offers = offerDao.getAll();
         for (Offer offer : offers) {
             offer.setClientName(clientDao.getById(offer.getClientId()).getName());
@@ -79,7 +79,7 @@ public class OffersView extends VerticalLayout {
         offerGrid.getColumnByKey("duration").setHeader("Срок, мес");
     }
 
-    public Stream<Offer> fetchOffer(String filter) {
+    private Stream<Offer> fetchOffer(String filter) {
         return offers.stream()
                 .filter(offer -> filter == null ||
                         offer.getClientName().toLowerCase().startsWith(filter.toLowerCase()) ||

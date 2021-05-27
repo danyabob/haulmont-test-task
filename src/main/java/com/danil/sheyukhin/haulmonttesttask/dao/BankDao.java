@@ -29,6 +29,9 @@ public class BankDao implements Dao<Bank> {
 
     @Override
     public int create(Bank bank) {
+        if (bank == null) {
+            throw new RuntimeException();
+        }
         jdbcTemplate.update("INSERT INTO BANK(NAME) VALUES (?)",
                 bank.getName());
         return jdbcTemplate.queryForObject("SELECT ID FROM BANK WHERE NAME = ?", Integer.class,

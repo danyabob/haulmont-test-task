@@ -15,11 +15,14 @@ public class Offer {
     private Integer id;
     private Integer clientId;
     private Integer creditId;
+
     private int summa;
     private int duration;
+
     private String clientName;
     private String bankName;
     private String creditName;
+
     private double percentage;
 
 
@@ -66,10 +69,6 @@ public class Offer {
         this.duration = duration;
     }
 
-    public List<Payment> getPayments(double percentage) {
-        return Payment.getPayments(summa, duration, percentage);
-    }
-
     public String getClientName() {
         return clientName;
     }
@@ -98,6 +97,10 @@ public class Offer {
         this.percentage = percentage;
     }
 
+    public List<Payment> getPayments(double percentage) {
+        return Payment.getPayments(summa, duration, percentage);
+    }
+
     @Override
     public String toString() {
         return "" + getSumma();
@@ -123,9 +126,8 @@ public class Offer {
         public static List<Payment> getPayments(int summa, int duration, double percentage) {
             List<Payment> payments = new ArrayList<Payment>();
             int nextMonth = 1;
-            double scale = Math.pow(10, 2);
             double bodySum = summa / duration;
-            for (int i=0; i < duration; i++) {
+            for (int i = 0; i < duration; i++) {
                 LocalDate paymentDate = LocalDate.now().plusMonths(nextMonth++);
                 int daysOfTheMonth = paymentDate.lengthOfMonth();
                 int daysOfTheYear = paymentDate.lengthOfYear();
@@ -145,7 +147,6 @@ public class Offer {
         public String getPaymentSumString() {
             return decimalFormat.format(paymentSum);
         }
-
         public void setPaymentSumString(String paymentSumString) {
             this.paymentSumString = paymentSumString;
         }
@@ -153,7 +154,6 @@ public class Offer {
         public String getBodySumString() {
             return decimalFormat.format(bodySum);
         }
-
         public void setBodySumString(String bodySumString) {
             this.bodySumString = bodySumString;
         }
@@ -161,7 +161,6 @@ public class Offer {
         public String getPercentageSumString() {
             return decimalFormat.format(percentageSum);
         }
-
         public void setPercentageSumString(String percentageSumString) {
             this.percentageSumString = percentageSumString;
         }

@@ -33,8 +33,10 @@ import java.util.stream.Stream;
 public class BanksAndCreditsView extends VerticalLayout {
     private Dao<Bank> bankDao;
     private Dao<Credit> creditDao;
+
     private BankEditor bankEditor;
     private CreditEditor creditEditor;
+
     private Grid<Bank> bankGrid;
     private Grid<Credit> creditGrid;
     private Button newBankButton;
@@ -42,6 +44,7 @@ public class BanksAndCreditsView extends VerticalLayout {
     private Button editBankButton;
     private Button newCreditButton;
     private TextField creditFilterTextField;
+
     private Integer bankId = null;
 
     public BanksAndCreditsView(Dao<Bank> bankDao, Dao<Credit> creditDao, BankEditor bankEditor, CreditEditor creditEditor) {
@@ -62,13 +65,14 @@ public class BanksAndCreditsView extends VerticalLayout {
         editBankButton = new Button("Изменить банк", VaadinIcon.REFRESH.create());
         editBankButton.setEnabled(false);
         editBankButton.addClickListener(e -> bankEditor.editBank(bankDao.getById(bankId)));
+
         HorizontalLayout addBankButtonLayout = new HorizontalLayout(newBankButton, bankFilterTextField, editBankButton);
         addBankButtonLayout.setWidthFull();
 
         bankGrid = new Grid<>(Bank.class);
+        loadBanks();
         bankGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        loadBanks();
         bankGrid.setHeight("50%");
         bankGrid.asSingleSelect().addValueChangeListener(e -> {
             if (e.getValue() != null) {
@@ -112,9 +116,9 @@ public class BanksAndCreditsView extends VerticalLayout {
         addCreditButtonLayout.setWidthFull();
 
         creditGrid = new Grid<>(Credit.class);
+        loadCredits();
         creditGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        loadCredits();
         creditGrid.setHeight("50%");
         creditGrid.asSingleSelect().addValueChangeListener(e -> {
             creditEditor.editCredit(e.getValue());
@@ -139,7 +143,7 @@ public class BanksAndCreditsView extends VerticalLayout {
         add(ClientsView.menuBar(), banksAndCreditsLayout);
     }
 
-    public void loadBanks() {
+    private void loadBanks() {
         bankGrid.setItems(bankDao.getAll());
         bankGrid.setColumns("name");
         bankGrid.getColumnByKey("name").setHeader("Название банка");
@@ -164,13 +168,13 @@ public class BanksAndCreditsView extends VerticalLayout {
         creditGrid.getColumnByKey("percentage").setHeader("Процентная ставка, %");
     }
 
-    public Stream<Bank> fetchBank(String filter) {
+    private Stream<Bank> fetchBank(String filter) {
         return bankDao.getAll().stream()
                 .filter(bank -> filter == null ||
                         bank.getName().toLowerCase().startsWith(filter.toLowerCase()));
     }
 
-    public Stream<Credit> fetchCredit(String filter) {
+    private Stream<Credit> fetchCredit(String filter) {
         return creditsByBankId().stream()
                 .filter(credit -> filter == null ||
                         credit.getName().toLowerCase().startsWith(filter.toLowerCase()));

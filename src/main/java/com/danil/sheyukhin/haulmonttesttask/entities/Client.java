@@ -9,11 +9,12 @@ package com.danil.sheyukhin.haulmonttesttask.entities;
 public class Client {
 
     private Integer id;
+    private Integer bankId;
+
     private String name;
     private String phone;
     private String email;
     private String passport;
-    private Integer bankId;
 
     public Client(Integer id, String name, String phone, String email, String passport, Integer bankId) {
         this.id = id;
@@ -31,7 +32,9 @@ public class Client {
         this.id = id;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
     public void setName(String name) {
         this.name = name;
     }
@@ -60,7 +63,6 @@ public class Client {
     public Integer getBankId() {
         return bankId;
     }
-
     public void setBankId(Integer bankId) {
         this.bankId = bankId;
     }

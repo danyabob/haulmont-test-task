@@ -8,9 +8,11 @@ package com.danil.sheyukhin.haulmonttesttask.entities;
 
 public class Credit {
 
-    private Integer id = null;
+    private Integer id;
     private Integer bankId;
+
     private String name;
+
     private int limit;
     private int percentage;
 
@@ -46,7 +48,6 @@ public class Credit {
     public int getLimit() {
         return limit;
     }
-
     public void setLimit(int limit) {
         this.limit = limit;
     }
@@ -54,7 +55,6 @@ public class Credit {
     public int getPercentage() {
         return percentage;
     }
-
     public void setPercentage(int percentage) {
         this.percentage = percentage;
     }

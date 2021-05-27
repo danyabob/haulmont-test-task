@@ -23,66 +23,74 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SpringComponent
 @UIScope
 public class ClientEditor extends VerticalLayout implements KeyNotifier {
-    private Dao<Client> clientDao;
+    private final Dao<Client> clientDao;
     private Client client;
 
-    TextField name = new TextField("ФИО");
-    TextField phone = new TextField("Телефон");
-    TextField email = new TextField("e-mail");
-    TextField passport = new TextField("Паспорт");
-    HorizontalLayout namePhoneEmailPassport = new HorizontalLayout(name, phone, email, passport);
+    private TextField name;
+    private TextField phone;
+    private TextField email;
+    private TextField passport;
 
-    Button save = new Button("Сохранить", VaadinIcon.CHECK.create());
-    Button cancel = new Button("Отменить");
-    Button delete = new Button("Удалить", VaadinIcon.TRASH.create());
-    HorizontalLayout actions = new HorizontalLayout(save, cancel, delete);
+    private Button save;
+    private Button cancel;
+    private Button delete;
 
-    Binder<Client> binder = new Binder<>(Client.class);
+    private Binder<Client> binder;
     private ChangeHandler changeHandler;
 
     @Autowired
     public ClientEditor(Dao<Client> clientDao) {
         this.clientDao = clientDao;
 
+        name = new TextField("ФИО");
         name.setWidthFull();
         name.setMaxLength(32);
-        phone.setMaxLength(32);
-        email.setMaxLength(32);
-        passport.setMaxLength(32);
-        namePhoneEmailPassport.setSizeFull();
-        add(namePhoneEmailPassport, actions);
 
+        phone = new TextField("Телефон");
+        phone.setMaxLength(32);
+
+        email = new TextField("e-mail");
+        email.setMaxLength(32);
+
+        passport = new TextField("Паспорт");
+        passport.setMaxLength(32);
+
+        HorizontalLayout namePhoneEmailPassport = new HorizontalLayout(name, phone, email, passport);
+        namePhoneEmailPassport.setSizeFull();
+
+        save = new Button("Сохранить", VaadinIcon.CHECK.create());
+        save.getElement().getThemeList().add("primary");
+        save.addClickListener(e -> save());
+
+        cancel = new Button("Отменить");
+        cancel.addClickListener(e -> editClient(null));
+
+        delete = new Button("Удалить", VaadinIcon.TRASH.create());
+        delete.getElement().getThemeList().add("error");
+        delete.addClickListener(e -> delete());
+
+        HorizontalLayout actions = new HorizontalLayout(save, cancel, delete);
+
+        binder = new Binder<>(Client.class);
         binder.bindInstanceFields(this);
 
         setSpacing(true);
-
-        save.getElement().getThemeList().add("primary");
-        delete.getElement().getThemeList().add("error");
-
-        addKeyPressListener(Key.ENTER, e -> save());
-
-        save.addClickListener(e -> save());
-        delete.addClickListener(e -> delete());
-        cancel.addClickListener(e -> editClient(null));
         setVisible(false);
+        add(namePhoneEmailPassport, actions);
     }
 
-    void delete() {
+    private void delete() {
         clientDao.delete(client.getId());
         changeHandler.onChange();
     }
 
-    void save() {
+    private void save() {
         if (client.getId() != null) {
             clientDao.update(client);
         } else {
             clientDao.create(client);
         }
         changeHandler.onChange();
-    }
-
-    public interface ChangeHandler {
-        void onChange();
     }
 
     public final void editClient(Client newClient) {
@@ -92,8 +100,7 @@ public class ClientEditor extends VerticalLayout implements KeyNotifier {
         }
         if (newClient.getId() != null) {
             client = clientDao.getById(newClient.getId());
-        }
-        else {
+        } else {
             client = newClient;
         }
 
@@ -106,6 +113,10 @@ public class ClientEditor extends VerticalLayout implements KeyNotifier {
 
     public void setChangeHandler(ChangeHandler h) {
         changeHandler = h;
+    }
+
+    public interface ChangeHandler {
+        void onChange();
     }
 
 }

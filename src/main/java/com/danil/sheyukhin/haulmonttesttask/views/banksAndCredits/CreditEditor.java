@@ -18,7 +18,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringComponent
 @UIScope
@@ -27,65 +26,69 @@ public class CreditEditor extends VerticalLayout implements KeyNotifier {
     private Credit credit;
     private ChangeHandler changeHandler;
 
-    private TextField name = new TextField("Название");
-    private IntegerField limit = new IntegerField("Лимит, руб");
-    private IntegerField percentage = new IntegerField("Ставка, %");
-    private HorizontalLayout limitPercentageLayout = new HorizontalLayout(name, limit, percentage);
+    private TextField name;
+    private IntegerField limit;
+    private IntegerField percentage;
+    private Button save;
+    private Button cancel;
+    private Button delete;
+    private Binder<Credit> binder;
 
-    private Button save = new Button("Сохранить", VaadinIcon.CHECK.create());
-    private Button cancel = new Button("Отменить");
-    private Button delete = new Button("Удалить", VaadinIcon.TRASH.create());
-    private HorizontalLayout actions = new HorizontalLayout(save, cancel, delete);
-
-    private Binder<Credit> binder = new Binder<>(Credit.class);
-
-    @Autowired
     public CreditEditor(Dao<Credit> creditDao) {
         this.creditDao = creditDao;
 
+        name = new TextField("Название");
         name.setMaxLength(32);
 
-        binder.forField(limit).withValidator(e -> e >= 1 && e <= 100_000_000, "1 - 100 000 000").
-                bind(Credit::getLimit, Credit::setLimit);
-        binder.forField(percentage).withValidator(e -> e >= 1 && e <= 100, "1 - 100").
-                bind(Credit::getPercentage, Credit::setPercentage);
+        limit = new IntegerField("Лимит, руб");
 
-        add(limitPercentageLayout, actions);
+        percentage = new IntegerField("Ставка, %");
 
-        binder.bindInstanceFields(this);
+        HorizontalLayout limitPercentageLayout = new HorizontalLayout(name, limit, percentage);
 
-        setSpacing(true);
-
+        save = new Button("Сохранить", VaadinIcon.CHECK.create());
         save.getElement().getThemeList().add("primary");
-        delete.getElement().getThemeList().add("error");
-
         save.addClickListener(e -> {
             if (limit.getValue() > limit.getMin() && limit.getValue() <= limit.getMax() &&
                     percentage.getValue() > percentage.getMin() && percentage.getValue() <= percentage.getMax()) {
                 save();
             }
         });
-        delete.addClickListener(e -> delete());
+
+        cancel = new Button("Отменить");
         cancel.addClickListener(e -> editCredit(null));
+
+        delete = new Button("Удалить", VaadinIcon.TRASH.create());
+        delete.getElement().getThemeList().add("error");
+        delete.addClickListener(e -> delete());
+
+        HorizontalLayout actions = new HorizontalLayout(save, cancel, delete);
+
+        binder = new Binder<>(Credit.class);
+        binder.forField(limit).withValidator(e -> e >= 1 && e <= 100_000_000, "1 - 100 000 000").
+                bind(Credit::getLimit, Credit::setLimit);
+        binder.forField(percentage).withValidator(e -> e >= 1 && e <= 100, "1 - 100").
+                bind(Credit::getPercentage, Credit::setPercentage);
+        binder.bindInstanceFields(this);
+
+
         setVisible(false);
+        setSpacing(true);
+        add(limitPercentageLayout, actions);
     }
 
-    void delete() {
+    private void delete() {
         creditDao.delete(credit.getId());
         changeHandler.onChange();
     }
 
-    void save() {
+    private void save() {
         if (credit.getId() != null) {
             creditDao.update(credit);
         } else {
             creditDao.create(credit);
         }
         changeHandler.onChange();
-    }
-
-    public interface ChangeHandler {
-        void onChange();
     }
 
     public final void editCredit(Credit newCredit) {
@@ -95,8 +98,7 @@ public class CreditEditor extends VerticalLayout implements KeyNotifier {
         }
         if (newCredit.getId() != null) {
             credit = creditDao.getById(newCredit.getId());
-        }
-        else {
+        } else {
             credit = newCredit;
         }
 
@@ -109,6 +111,10 @@ public class CreditEditor extends VerticalLayout implements KeyNotifier {
 
     public void setChangeHandler(ChangeHandler h) {
         changeHandler = h;
+    }
+
+    public interface ChangeHandler {
+        void onChange();
     }
 
 }
