@@ -1,10 +1,14 @@
-package com.danil.sheyukhin.haulmonttesttask.dao;
+/*
+ * Copyright (c) 2021.
+ * Danil Sheyukhin
+ * danya.bob@gmail.com
+ */
 
-import com.danil.sheyukhin.haulmonttesttask.entities.Entity;
+package com.danil.sheyukhin.haulmonttesttask.dao;
 
 import java.util.List;
 
-public interface Dao<T extends Entity> {
+public interface Dao<T> {
 
     int create(T object);
 

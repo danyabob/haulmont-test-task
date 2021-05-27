@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021.
+ * Danil Sheyukhin
+ * danya.bob@gmail.com
+ */
+
 package com.danil.sheyukhin.haulmonttesttask.views.banksAndCredits;
 
 import com.danil.sheyukhin.haulmonttesttask.dao.BankDao;
@@ -62,7 +68,7 @@ public class BanksAndCreditsView extends VerticalLayout {
         bankGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         loadBanks();
-
+        bankGrid.setHeight("50%");
         bankGrid.asSingleSelect().addValueChangeListener(e -> {
             if (e.getValue() != null) {
                 bankId = e.getValue().getId();
@@ -92,7 +98,7 @@ public class BanksAndCreditsView extends VerticalLayout {
         newCreditButton = new Button("Добавить кредит", VaadinIcon.PLUS.create());
         newCreditButton.getElement().getThemeList().add("primary");
         newCreditButton.setEnabled(false);
-        newCreditButton.addClickListener(e -> creditEditor.editCredit(new Credit(null, bankId, "", 0, 0)));
+        newCreditButton.addClickListener(e -> creditEditor.editCredit(new Credit(null, bankId, "", 100000, 20)));
 
         creditFilterTextField = new TextField();
         creditFilterTextField.setPlaceholder("Быстрый поиск");
@@ -108,7 +114,7 @@ public class BanksAndCreditsView extends VerticalLayout {
         creditGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         loadCredits();
-
+        creditGrid.setHeight("50%");
         creditGrid.asSingleSelect().addValueChangeListener(e -> {
             creditEditor.editCredit(e.getValue());
         });

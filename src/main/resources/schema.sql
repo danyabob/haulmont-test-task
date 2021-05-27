@@ -1,3 +1,7 @@
+-- Copyright (c) 2021.
+-- Danil Sheyukhin
+-- danya.bob@gmail.com
+
 DROP SCHEMA PUBLIC CASCADE;
 
 create table BANK

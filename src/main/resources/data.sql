@@ -1,3 +1,7 @@
+-- Copyright (c) 2021.
+-- Danil Sheyukhin
+-- danya.bob@gmail.com
+
 INSERT INTO BANK(NAME) VALUES ('Сбер');
 INSERT INTO BANK(NAME) VALUES ('Альфа');
 INSERT INTO BANK(NAME) VALUES ('ВТБ');

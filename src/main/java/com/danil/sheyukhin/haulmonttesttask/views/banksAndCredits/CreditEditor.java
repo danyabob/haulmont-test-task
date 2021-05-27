@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021.
+ * Danil Sheyukhin
+ * danya.bob@gmail.com
+ */
+
 package com.danil.sheyukhin.haulmonttesttask.views.banksAndCredits;
 
 import com.danil.sheyukhin.haulmonttesttask.dao.CreditDao;
@@ -14,6 +20,8 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import com.vaadin.flow.theme.Theme;
+import com.vaadin.flow.theme.lumo.Lumo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringComponent
@@ -23,29 +31,28 @@ public class CreditEditor extends VerticalLayout implements KeyNotifier {
     private Credit credit;
     private ChangeHandler changeHandler;
 
-    TextField name = new TextField("Название");
-    IntegerField limit = new IntegerField("Лимит, руб");
-    IntegerField percentage = new IntegerField("Ставка, %");
-    HorizontalLayout limitPercentageLayout = new HorizontalLayout(name, limit, percentage);
+    private TextField name = new TextField("Название");
+    private IntegerField limit = new IntegerField("Лимит, руб");
+    private IntegerField percentage = new IntegerField("Ставка, %");
+    private HorizontalLayout limitPercentageLayout = new HorizontalLayout(name, limit, percentage);
 
-    Button save = new Button("Сохранить", VaadinIcon.CHECK.create());
-    Button cancel = new Button("Отменить");
-    Button delete = new Button("Удалить", VaadinIcon.TRASH.create());
-    HorizontalLayout actions = new HorizontalLayout(save, cancel, delete);
+    private Button save = new Button("Сохранить", VaadinIcon.CHECK.create());
+    private Button cancel = new Button("Отменить");
+    private Button delete = new Button("Удалить", VaadinIcon.TRASH.create());
+    private HorizontalLayout actions = new HorizontalLayout(save, cancel, delete);
 
-    Binder<Credit> binder = new Binder<>(Credit.class);
+    private Binder<Credit> binder = new Binder<>(Credit.class);
 
     @Autowired
     public CreditEditor(CreditDao creditDao) {
         this.creditDao = creditDao;
 
         name.setMaxLength(32);
-        limit.setMin(1);
-        limit.setMax(10000000);
-        limit.setErrorMessage("1 - 10000000");
-        percentage.setMin(1);
-        percentage.setMax(100);
-        percentage.setErrorMessage("1 - 100");
+
+        binder.forField(limit).withValidator(e -> e >= 1 && e <= 100_000_000, "1 - 100 000 000").
+                bind(Credit::getLimit, Credit::setLimit);
+        binder.forField(percentage).withValidator(e -> e >= 1 && e <= 100, "1 - 100").
+                bind(Credit::getPercentage, Credit::setPercentage);
 
         add(limitPercentageLayout, actions);
 

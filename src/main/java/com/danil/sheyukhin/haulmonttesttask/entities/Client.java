@@ -1,6 +1,12 @@
+/*
+ * Copyright (c) 2021.
+ * Danil Sheyukhin
+ * danya.bob@gmail.com
+ */
+
 package com.danil.sheyukhin.haulmonttesttask.entities;
 
-public class Client implements Entity {
+public class Client {
 
     private Integer id;
     private String name;
@@ -18,11 +24,9 @@ public class Client implements Entity {
         this.bankId = bankId;
     }
 
-    @Override
     public Integer getId() {
         return id;
     }
-    @Override
     public void setId(Integer id) {
         this.id = id;
     }

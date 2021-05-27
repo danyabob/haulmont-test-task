@@ -1,6 +1,12 @@
+/*
+ * Copyright (c) 2021.
+ * Danil Sheyukhin
+ * danya.bob@gmail.com
+ */
+
 package com.danil.sheyukhin.haulmonttesttask.entities;
 
-public class Credit implements Entity {
+public class Credit {
 
     private Integer id = null;
     private Integer bankId;
@@ -16,11 +22,9 @@ public class Credit implements Entity {
         this.percentage = percentage;
     }
 
-    @Override
     public Integer getId() {
         return id;
     }
-    @Override
     public void setId(Integer id) {
         this.id = id;
     }

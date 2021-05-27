@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021.
+ * Danil Sheyukhin
+ * danya.bob@gmail.com
+ */
+
 package com.danil.sheyukhin.haulmonttesttask.configuration;
 
 import org.springframework.context.annotation.Bean;

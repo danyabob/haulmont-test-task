@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021.
+ * Danil Sheyukhin
+ * danya.bob@gmail.com
+ */
+
 package com.danil.sheyukhin.haulmonttesttask.views.clients;
 
 import com.danil.sheyukhin.haulmonttesttask.dao.ClientDao;
@@ -86,7 +92,6 @@ public class ClientsView extends VerticalLayout {
         Button offerButton = new Button("Действующие кредиты", VaadinIcon.MONEY.create());
         offerButton.addClickListener(e -> UI.getCurrent().navigate("offers"));
         Button calcButton = new Button("Рассчитать кредит", VaadinIcon.CALC.create());
-        calcButton.getElement().getThemeList().add("primary");
         calcButton.addClickListener(e -> UI.getCurrent().navigate("choose"));
         calcButton.getElement().getStyle().set("margin-left", "auto");
 

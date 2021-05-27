@@ -1,12 +1,17 @@
+/*
+ * Copyright (c) 2021.
+ * Danil Sheyukhin
+ * danya.bob@gmail.com
+ */
+
 package com.danil.sheyukhin.haulmonttesttask.entities;
 
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Offer implements Entity {
+public class Offer {
     private Integer id;
     private Integer clientId;
     private Integer creditId;
@@ -26,11 +31,9 @@ public class Offer implements Entity {
         this.duration = duration;
     }
 
-    @Override
     public Integer getId() {
         return id;
     }
-    @Override
     public void setId(Integer id) {
         this.id = id;
     }

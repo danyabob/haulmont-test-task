@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021.
+ * Danil Sheyukhin
+ * danya.bob@gmail.com
+ */
+
 package com.danil.sheyukhin.haulmonttesttask.views.clients;
 
 import com.danil.sheyukhin.haulmonttesttask.dao.ClientDao;
