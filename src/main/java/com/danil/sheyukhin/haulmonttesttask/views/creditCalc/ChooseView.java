@@ -13,16 +13,13 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H6;
-import com.vaadin.flow.component.listbox.ListBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 @Route("choose")
@@ -36,19 +33,12 @@ public class ChooseView extends VerticalLayout {
     private Credit credit;
     private OfferDao offerDao;
     private Offer offer;
-    private List<Client> clients;
-    private List<Bank> banks;
-    private List<Credit> credits;
-    private ListBox<Client> clientListBox = new ListBox<>();
-    private ListBox<Bank> bankListBox = new ListBox<>();
-    private ListBox<Credit> creditListBox = new ListBox<>();
     private ComboBox<Client> clientComboBox = new ComboBox<>();
     private ComboBox<Bank> bankComboBox = new ComboBox<>();
     private ComboBox<Credit> creditComboBox = new ComboBox<>();
     private IntegerField limit = new IntegerField("Укажите сумму кредита, руб");
     private IntegerField duration = new IntegerField("Укажите срок кредита, мес");
     private Button calcButton = new Button("Рассчитать");
-    private Binder<Offer> binder = new Binder<>(Offer.class);
     private boolean clientIsChoosed = false;
     private boolean bankIsChoosed = false;
     private boolean creditIsChoosed = false;
@@ -88,6 +78,7 @@ public class ChooseView extends VerticalLayout {
 
         H6 creditLabel = new H6("Выберите доступный кредит:");
         creditComboBox.setVisible(false);
+        creditComboBox.setWidthFull();
         creditComboBox.addValueChangeListener(e -> {
             if (e.getValue() != null) {
                 credit = e.getValue();
@@ -95,6 +86,7 @@ public class ChooseView extends VerticalLayout {
                 calcButtonEnableListener();
                 limit.setMax(credit.getLimit());
                 limit.setValue(credit.getLimit());
+                limit.setErrorMessage("1 - " + limit.getMax() + " руб");
             }
         });
         VerticalLayout creditLayout = new VerticalLayout(creditLabel, creditComboBox);
@@ -109,11 +101,14 @@ public class ChooseView extends VerticalLayout {
         leftVerticalLayout.setSizeFull();
 
         limit.setWidthFull();
-        limit.setMin(0);
+        limit.setMin(1);
+
         duration.setWidthFull();
         duration.setValue(12);
         duration.setMax(360);
-        duration.setMin(0);
+        duration.setMin(1);
+        duration.setErrorMessage("1 - 360 мес");
+
         calcButton.setEnabled(false);
         calcButton.addClickListener(e -> {
             if (limit.getValue() > 0 && limit.getValue() <= limit.getMax() && duration.getValue() > 0 && duration.getValue() <= duration.getMax()) {
