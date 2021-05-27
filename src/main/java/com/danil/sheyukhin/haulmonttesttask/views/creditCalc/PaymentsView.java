@@ -55,8 +55,8 @@ public class PaymentsView extends VerticalLayout {
         this.creditDao = creditDao;
         this.offerDao = offerDao;
 
-        offer = tempOffer();
-        if (offer != null) {
+        if (tempOffer != null) {
+            offer = tempOffer;
             credit = creditDao.getById(offer.getCreditId());
             payments = offer.getPayments(credit.getPercentage());
 
@@ -70,6 +70,7 @@ public class PaymentsView extends VerticalLayout {
             deleteOfferButton.getElement().getThemeList().add("error");
             deleteOfferButton.getElement().getStyle().set("margin-left", "auto");
             deleteOfferButton.addClickListener(e -> {
+                tempOffer = null;
                 offerDao.delete(offer.getId());
                 UI.getCurrent().navigate("offers");
             });
@@ -115,11 +116,5 @@ public class PaymentsView extends VerticalLayout {
 
     public static void setTempOffer(Offer tempOffer) {
         PaymentsView.tempOffer = tempOffer;
-    }
-
-    private Offer tempOffer() {
-        offer = tempOffer;
-        tempOffer = null;
-        return offer;
     }
 }
