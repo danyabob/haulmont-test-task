@@ -76,11 +76,11 @@ public class PaymentsView extends VerticalLayout {
 
     private void loadPayments() {
         paymentGrid.setItems(payments);
-        paymentGrid.setColumns("paymentDate", "paymentSum", "bodySum", "percentageSum");
+        paymentGrid.setColumns("paymentDate", "paymentSumString", "bodySumString", "percentageSumString");
         paymentGrid.getColumnByKey("paymentDate").setHeader("Дата платежа");
-        paymentGrid.getColumnByKey("paymentSum").setHeader("Сумма платежа");
-        paymentGrid.getColumnByKey("bodySum").setHeader("Сумма гашения тела кредита");
-        paymentGrid.getColumnByKey("percentageSum").setHeader("Сумма гашения процентов");
+        paymentGrid.getColumnByKey("paymentSumString").setHeader("Сумма платежа, руб");
+        paymentGrid.getColumnByKey("bodySumString").setHeader("Сумма гашения тела кредита, руб");
+        paymentGrid.getColumnByKey("percentageSumString").setHeader("Сумма гашения процентов, руб");
     }
 
     private double getFullPercentageSum() {

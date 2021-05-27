@@ -1,5 +1,7 @@
 package com.danil.sheyukhin.haulmonttesttask.entities;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,9 +102,13 @@ public class Offer implements Entity {
 
     public static class Payment {
         private LocalDate paymentDate;
+        private String paymentSumString;
+        private String bodySumString;
+        private String percentageSumString;
         private double paymentSum;
         private double bodySum;
         private double percentageSum;
+        private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
         public Payment(LocalDate paymentDate, double paymentSum, double bodySum, double percentageSum) {
             this.paymentDate = paymentDate;
@@ -125,12 +131,36 @@ public class Offer implements Entity {
                 summa -= bodySum;
                 Payment payment = new Payment(
                         paymentDate,
-                        Math.ceil(paymentSum * scale) / scale,
-                        Math.ceil(bodySum * scale) / scale,
-                        Math.ceil(percentageSum * scale) / scale);
+                        paymentSum,
+                        bodySum,
+                        percentageSum);
                 payments.add(payment);
             }
             return payments;
+        }
+
+        public String getPaymentSumString() {
+            return decimalFormat.format(paymentSum);
+        }
+
+        public void setPaymentSumString(String paymentSumString) {
+            this.paymentSumString = paymentSumString;
+        }
+
+        public String getBodySumString() {
+            return decimalFormat.format(bodySum);
+        }
+
+        public void setBodySumString(String bodySumString) {
+            this.bodySumString = bodySumString;
+        }
+
+        public String getPercentageSumString() {
+            return decimalFormat.format(percentageSum);
+        }
+
+        public void setPercentageSumString(String percentageSumString) {
+            this.percentageSumString = percentageSumString;
         }
 
         public LocalDate getPaymentDate() {
