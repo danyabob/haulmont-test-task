@@ -33,9 +33,7 @@ import java.util.List;
 @Theme(value = Lumo.class)
 public class PaymentsView extends VerticalLayout {
     private Dao<Client> clientDao;
-    private Client client;
     private Dao<Bank> bankDao;
-    private Bank bank;
     private Dao<Credit> creditDao;
     private Credit credit;
     private Dao<Offer> offerDao;
