@@ -8,7 +8,7 @@ import com.danil.sheyukhin.haulmonttesttask.entities.Bank;
 import com.danil.sheyukhin.haulmonttesttask.entities.Client;
 import com.danil.sheyukhin.haulmonttesttask.entities.Credit;
 import com.danil.sheyukhin.haulmonttesttask.entities.Offer;
-import com.danil.sheyukhin.haulmonttesttask.views.MainMenu;
+import com.danil.sheyukhin.haulmonttesttask.views.clients.ClientsView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -136,7 +136,7 @@ public class ChooseView extends VerticalLayout {
 
 
 
-        add(MainMenu.menuBar(), mainLayout);
+        add(ClientsView.menuBar(), mainLayout);
     }
 
     private void calcButtonEnableListener() {

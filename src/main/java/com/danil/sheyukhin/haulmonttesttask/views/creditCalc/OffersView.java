@@ -5,7 +5,7 @@ import com.danil.sheyukhin.haulmonttesttask.dao.ClientDao;
 import com.danil.sheyukhin.haulmonttesttask.dao.CreditDao;
 import com.danil.sheyukhin.haulmonttesttask.dao.OfferDao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Offer;
-import com.danil.sheyukhin.haulmonttesttask.views.MainMenu;
+import com.danil.sheyukhin.haulmonttesttask.views.clients.ClientsView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -50,7 +50,7 @@ public class OffersView extends VerticalLayout {
             UI.getCurrent().navigate("payments");
         });
 
-        add(MainMenu.menuBar(), offerFilterTextField, offerGrid);
+        add(ClientsView.menuBar(), offerFilterTextField, offerGrid);
     }
 
     public void loadOffers() {

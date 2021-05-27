@@ -2,7 +2,7 @@ package com.danil.sheyukhin.haulmonttesttask.views.clients;
 
 import com.danil.sheyukhin.haulmonttesttask.dao.ClientDao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Client;
-import com.danil.sheyukhin.haulmonttesttask.views.MainMenu;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -17,7 +17,7 @@ import com.vaadin.flow.theme.lumo.Lumo;
 
 import java.util.stream.Stream;
 
-@Route("clients")
+@Route("")
 @Theme(value = Lumo.class)
 public class ClientsView extends VerticalLayout {
     private ClientDao clientDao;
@@ -55,7 +55,7 @@ public class ClientsView extends VerticalLayout {
         });
 
         setHeightFull();
-        add(MainMenu.menuBar(), addButtonLayout, clientGrid, clientEditor);
+        add(menuBar(), addButtonLayout, clientGrid, clientEditor);
     }
 
     private void loadClients() {
@@ -74,5 +74,22 @@ public class ClientsView extends VerticalLayout {
                         client.getPhone().toLowerCase().startsWith(filter.toLowerCase()) ||
                         client.getEmail().toLowerCase().startsWith(filter.toLowerCase()) ||
                         client.getPassport().toLowerCase().startsWith(filter.toLowerCase()));
+    }
+
+    public static HorizontalLayout menuBar() {
+        Button clientButton = new Button("Список клиентов", VaadinIcon.USER.create());
+        clientButton.addClickListener(e -> UI.getCurrent().navigate(""));
+        Button bankButton = new Button("Банки и доступные кредиты", VaadinIcon.BOOK_PERCENT.create());
+        bankButton.addClickListener(e -> UI.getCurrent().navigate("banks"));
+        Button offerButton = new Button("Действующие кредиты", VaadinIcon.MONEY.create());
+        offerButton.addClickListener(e -> UI.getCurrent().navigate("offers"));
+        Button calcButton = new Button("Рассчитать кредит", VaadinIcon.CALC.create());
+        calcButton.getElement().getThemeList().add("primary");
+        calcButton.addClickListener(e -> UI.getCurrent().navigate("choose"));
+        calcButton.getElement().getStyle().set("margin-left", "auto");
+
+        HorizontalLayout horizontalLayout = new HorizontalLayout(clientButton, bankButton, offerButton, calcButton);
+        horizontalLayout.setWidthFull();
+        return horizontalLayout;
     }
 }

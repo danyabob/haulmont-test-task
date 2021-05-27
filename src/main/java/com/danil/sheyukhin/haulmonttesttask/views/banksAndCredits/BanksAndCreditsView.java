@@ -4,7 +4,7 @@ import com.danil.sheyukhin.haulmonttesttask.dao.BankDao;
 import com.danil.sheyukhin.haulmonttesttask.dao.CreditDao;
 import com.danil.sheyukhin.haulmonttesttask.entities.Bank;
 import com.danil.sheyukhin.haulmonttesttask.entities.Credit;
-import com.danil.sheyukhin.haulmonttesttask.views.MainMenu;
+import com.danil.sheyukhin.haulmonttesttask.views.clients.ClientsView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -127,7 +127,7 @@ public class BanksAndCreditsView extends VerticalLayout {
         banksAndCreditsLayout.setSpacing(true);
 
         setSizeFull();
-        add(MainMenu.menuBar(), banksAndCreditsLayout);
+        add(ClientsView.menuBar(), banksAndCreditsLayout);
     }
 
     public void loadBanks() {
